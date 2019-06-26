@@ -8,10 +8,12 @@ import Shake from 'shake.js'
 export class AppComponent  {
   public shakeEvent = new Shake({threshold: 25, timeout: 100});
   public finish = false;
-  public timingOver = 0;
+  public timingOver = undefined;
   public finalTime = 0;
   public shakes = 0;
-  string = '';
+  public image = 'https://cdn.jsdelivr.net/gh/Mteixeira88/cow-shake@master/cow_init.gif';
+  private imageShaking = 'https://cdn.jsdelivr.net/gh/Mteixeira88/cow-shake@master/cow_shake.gif';
+  private imageEnd = 'https://cdn.jsdelivr.net/gh/Mteixeira88/cow-shake@master/cow_end.gif';
 
   public isMobile(): boolean {
 		if (/Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -21,15 +23,17 @@ export class AppComponent  {
 	}
 
     public shakeEventDidOccur() {
-      
+
     }
 
     ngOnInit() {
       if (this.isMobile()) {
         this.shakeEvent.start();
         window.addEventListener('shake', () => {
+          if (this.image !== this.imageShaking) {
+            this.image = this.imageShaking;
+          }
           clearTimeout(this.timingOver);
-          let time = 0;
           this.shakes += 1
           if (this.shakes % 5 === 0) {
             this.finalTime += 1;
@@ -38,6 +42,7 @@ export class AppComponent  {
               this.finalTime += 1;
               clearTimeout(this.timingOver);
               this.shakeEvent.stop();
+              this.image = this.imageEnd;
               this.finish = true;
           }, 500)
         }, false);
