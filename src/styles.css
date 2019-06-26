@@ -1,1 +1,12 @@
-/* Add application styles & imports to this file! */
+body {
+  margin: 0;
+}
+
+.body {
+  height: 100vh;
+  width: 100vw;
+  background-image: url('https://cdn.jsdelivr.net/gh/Mteixeira88/cow-shake@master/cow_init.gif');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
