@@ -7,6 +7,7 @@
 </head>
 
 <body>
+    <audio id="cowMoo" autoplay loop="true"></audio>
     <div class="score">
         <p id="score">You don't have a score</p>
     </div>
@@ -14,7 +15,7 @@
         <button id="button" class="button" onclick="shaking()">Restart</button>
     </div>
     <div class="score">
-        <p id="instantScore">Shake to milk the cow</p>
+        <p id="instantScore">Click the start button</p>
     </div>
 </body>
 <script src="shake.js"></script>
@@ -29,6 +30,10 @@
     var imageInit = './assets/cow_init.gif';
     var imageShaking = './assets/cow_shake.gif';
     var imageEnd = './assets/cow_end.gif';
+    var button = '';
+    var bodyShape = '';
+    var soundCow = '';
+    var soundBegin = true;
 
     function isMobile() {
         if (/Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -37,24 +42,35 @@
         return false;
     }
 
+    function init() {
+        button = document.getElementById('button');
+        bodyShape = document.getElementById('body');
+        bodyShape.style.backgroundImage = 'url(./assets/cow.gif)';
+        button.innerText = "Start";
+    }
+
     function shaking() {
         shakes = 0;
         finalTime = 0;
-        var bodyShape = document.getElementById('body');
+        soundCow = document.getElementById('cowMoo');
+        soundCow.play();
+        soundCow.src = './assets/cowMoo.mp3';
         var score = document.getElementById('score');
         var instantScore = document.getElementById('instantScore');
         instantScore.innerText = 'Shake phone to milk the cow';
-        var button = document.getElementById('button');
-        image = imageInit;
         button.style.display = 'none';
+        image = imageInit;
+        bodyShape.style.backgroundImage = 'url(' + image + ')';
         if (localStorage.getItem('scoreCow')) {
             score.innerText = 'Highest score: ' + localStorage.getItem('scoreCow') + ' shakes';
         }
-        console.log(shakeEvent);
-        bodyShape.style.backgroundImage = 'url(' + image + ')';
         if (isMobile()) {
             shakeEvent.start();
             window.addEventListener('shake', () => {
+                if (soundBegin) {
+                    soundCow.src = './assets/cowMoo3.mp3';
+                    soundBegin = false;
+                }
                 clearTimeout(timingOver);
                 if (image !== imageShaking) {
                     image = imageShaking;
@@ -65,7 +81,9 @@
                 }
                 shakes += 1
                 timingOver = setTimeout(() => {
+                    soundCow.src = './assets/crying.mp3';
                     clearTimeout(timingOver);
+                    button.innerText = "Restart";
                     shakeEvent.stop();
                     bodyShape.style.backgroundImage = 'url(' + imageEnd + ')';
                     button.style.display = 'block';
@@ -80,7 +98,7 @@
         }
     }
 
-    document.addEventListener('DOMContentLoaded', shaking, false);
+    document.addEventListener('DOMContentLoaded', init, false);
 </script>
 
 </html>
