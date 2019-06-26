@@ -36,6 +36,7 @@
     var soundCow = '';
     var soundBegin = true;
     var score = '';
+    var instantScore = '';
 
     function isMobile() {
         if (/Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -50,6 +51,7 @@
         bodyShape.style.backgroundImage = 'url(./assets/cow.gif)';
         button.innerText = "Start";
         score = document.getElementById('score');
+        instantScore = document.getElementById('instantScore');
         if (localStorage.getItem('scoreCow')) {
             score.innerText = 'Highest score: ' + localStorage.getItem('scoreCow') + ' shakes';
         }
@@ -61,8 +63,6 @@
         soundBegin = true;
         soundCow = document.getElementById('cowMoo');
         soundCow.play();
-        soundCow.src = './assets/cowMoo.mp3';
-        var instantScore = document.getElementById('instantScore');
         instantScore.innerText = 'Shake phone to milk the cow';
         button.style.display = 'none';
         image = imageInit;
@@ -71,10 +71,7 @@
         if (isMobile()) {
             shakeEvent.start();
             window.addEventListener('shake', () => {
-                if (soundBegin) {
-                    soundCow.src = './assets/cowMoo3.mp3';
-                    soundBegin = false;
-                }
+                soundCow.src = '';
                 clearTimeout(timingOver);
                 if (image !== imageShaking) {
                     image = imageShaking;
@@ -85,7 +82,6 @@
                 }
                 shakes += 1
                 timingOver = setTimeout(() => {
-                    soundCow.src = './assets/crying.mp3';
                     clearTimeout(timingOver);
                     button.innerText = "Restart";
                     shakeEvent.stop();
@@ -95,6 +91,7 @@
                     if (!localStorage.getItem('scoreCow') || shakes > parseInt(localStorage.getItem('scoreCow'))) {
                         localStorage.setItem('scoreCow', shakes)
                         score.innerText = 'New score: ' + localStorage.getItem('scoreCow') + ' shakes';
+                        soundCow.src = './assets/cowMoo3.mp3';
                     }
                     instantScore.innerText = 'Your score: ' + shakes + ' shakes in ' + finalTime + ' seconds';
                 }, 1000)
