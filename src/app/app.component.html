@@ -1,0 +1,6 @@
+
+<h1 *ngIf="!isMobile()">Use a mobile device</h1>
+
+<p  *ngIf="isMobile()">Shake your phone</p>
+<p  *ngIf="isMobile()">{{shakes}} shakes</p>
+<p  *ngIf="isMobile() && finish">You did {{shakes}} shakes in {{finalTime}} seconds</p>
