@@ -2,6 +2,7 @@
 
 <head>
     <title>Cow Shake game</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
     <link rel="stylesheet" href="./styles.css">
     <link href="https://fonts.googleapis.com/css?family=Work+Sans&display=swap" rel="stylesheet">
 </head>
@@ -34,6 +35,7 @@
     var bodyShape = '';
     var soundCow = '';
     var soundBegin = true;
+    var score = '';
 
     function isMobile() {
         if (/Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -47,23 +49,25 @@
         bodyShape = document.getElementById('body');
         bodyShape.style.backgroundImage = 'url(./assets/cow.gif)';
         button.innerText = "Start";
+        score = document.getElementById('score');
+        if (localStorage.getItem('scoreCow')) {
+            score.innerText = 'Highest score: ' + localStorage.getItem('scoreCow') + ' shakes';
+        }
     }
 
     function shaking() {
         shakes = 0;
         finalTime = 0;
+        soundBegin = true;
         soundCow = document.getElementById('cowMoo');
         soundCow.play();
         soundCow.src = './assets/cowMoo.mp3';
-        var score = document.getElementById('score');
         var instantScore = document.getElementById('instantScore');
         instantScore.innerText = 'Shake phone to milk the cow';
         button.style.display = 'none';
         image = imageInit;
         bodyShape.style.backgroundImage = 'url(' + image + ')';
-        if (localStorage.getItem('scoreCow')) {
-            score.innerText = 'Highest score: ' + localStorage.getItem('scoreCow') + ' shakes';
-        }
+
         if (isMobile()) {
             shakeEvent.start();
             window.addEventListener('shake', () => {
