@@ -11,7 +11,8 @@ export class AppComponent  {
   public timingOver = 0;
   public finalTime = 0;
   public shakes = 0;
-  string = '';
+  private imageShaking = 'https://cdn.jsdelivr.net/gh/Mteixeira88/cow-shake@master/cow_shake.gif';
+  private imageEnd = ''
 
   public isMobile(): boolean {
 		if (/Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
