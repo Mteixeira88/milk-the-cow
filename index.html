@@ -19,9 +19,10 @@
 </body>
 <script src="shake.js"></script>
 <script>
-    var shakeEvent = new Shake({ threshold: 25, timeout: 100 });
+    var shakeEvent = new Shake({ threshold: 25, timeout: 500 });
     var finish = false;
     var timingOver = undefined;
+    var time = undefined;
     var finalTime = 0;
     var shakes = 0;
     var image = './assets/cow_init.gif';
@@ -37,41 +38,44 @@
     }
 
     function shaking() {
+        shakes = 0;
+        finalTime = 0;
         var bodyShape = document.getElementById('body');
         var score = document.getElementById('score');
         var instantScore = document.getElementById('instantScore');
-        instantScore.innerText = 'Shake to milk the cow';
+        instantScore.innerText = 'Shake phone to milk the cow';
         var button = document.getElementById('button');
         image = imageInit;
         button.style.display = 'none';
         if (localStorage.getItem('scoreCow')) {
             score.innerText = 'Highest score: ' + localStorage.getItem('scoreCow') + ' shakes';
         }
+        console.log(shakeEvent);
         bodyShape.style.backgroundImage = 'url(' + image + ')';
         if (isMobile()) {
             shakeEvent.start();
             window.addEventListener('shake', () => {
+                clearTimeout(timingOver);
                 if (image !== imageShaking) {
                     image = imageShaking;
                     bodyShape.style.backgroundImage = 'url(' + imageShaking + ')';
                 }
-                clearTimeout(timingOver);
-                shakes += 1
-                if (shakes % 5 === 0) {
-                    finalTime += 1;
+                if (shakes === 0) {
+                    time = +new Date();
                 }
+                shakes += 1
                 timingOver = setTimeout(() => {
-                    finalTime += 1;
                     clearTimeout(timingOver);
                     shakeEvent.stop();
                     bodyShape.style.backgroundImage = 'url(' + imageEnd + ')';
                     button.style.display = 'block';
-                    if (shakes > parseInt(localStorage.getItem('scoreCow'))) {
+                    finalTime = Math.round((+new Date() - time) / 1000);
+                    if (!localStorage.getItem('scoreCow') || shakes > parseInt(localStorage.getItem('scoreCow'))) {
                         localStorage.setItem('scoreCow', shakes)
                         score.innerText = 'New score: ' + localStorage.getItem('scoreCow') + ' shakes';
                     }
                     instantScore.innerText = 'Your score: ' + shakes + ' shakes in ' + finalTime + ' seconds';
-                }, 500)
+                }, 1000)
             }, false);
         }
     }
