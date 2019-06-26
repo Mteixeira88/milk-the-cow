@@ -11,8 +11,9 @@ export class AppComponent  {
   public timingOver = 0;
   public finalTime = 0;
   public shakes = 0;
+  public image = 'https://cdn.jsdelivr.net/gh/Mteixeira88/cow-shake@master/cow_init.gif';
   private imageShaking = 'https://cdn.jsdelivr.net/gh/Mteixeira88/cow-shake@master/cow_shake.gif';
-  private imageEnd = ''
+  private imageEnd = 'https://cdn.jsdelivr.net/gh/Mteixeira88/cow-shake@master/cow_end.gif';
 
   public isMobile(): boolean {
 		if (/Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -29,6 +30,9 @@ export class AppComponent  {
       if (this.isMobile()) {
         this.shakeEvent.start();
         window.addEventListener('shake', () => {
+          if (this.image !== this.imageShaking) {
+            this.image = this.imageShaking;
+          }
           clearTimeout(this.timingOver);
           let time = 0;
           this.shakes += 1
@@ -39,6 +43,7 @@ export class AppComponent  {
               this.finalTime += 1;
               clearTimeout(this.timingOver);
               this.shakeEvent.stop();
+              this.image = this.imageEnd;
               this.finish = true;
           }, 500)
         }, false);

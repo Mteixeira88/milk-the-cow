@@ -4,3 +4,5 @@
 <p  *ngIf="isMobile()">Shake your phone</p>
 <p  *ngIf="isMobile()">{{shakes}} shakes</p>
 <p  *ngIf="isMobile() && finish">You did {{shakes}} shakes in {{finalTime}} seconds</p>
+
+<div class="body" [style.backgroundImage]="'url'( + image + ')'"></div>
