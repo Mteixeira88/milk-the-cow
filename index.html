@@ -4,19 +4,75 @@
     <title>Cow Shake game</title>
     <meta name="viewport" content="width=device-width, user-scalable=no">
     <link rel="stylesheet" href="./styles.css">
-    <link href="https://fonts.googleapis.com/css?family=Work+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <audio id="cowMoo" autoplay loop="true"></audio>
-    <div class="score">
-        <p id="score">You don't have a score</p>
+    <!-- <audio id="cowMoo" autoplay loop="true"></audio> -->
+    <div class="background-top"></div>
+    <div class="highscore">
+        <p id="score">Highscore: 0</p>
+    </div>
+    <div class="your-library">
+        <div class="your-library__wrapper">
+            <p id="milkScore">0x</p>
+            <img src="./assets/milk.png" alt="">
+        </div>
+        <div class="your-library__wrapper">
+            <p id="yogurtScore">0x</p>
+            <img src="./assets/yogurt.png" alt="">
+        </div>
+        <div class="your-library__wrapper">
+            <p id="iceCreamScore">0x</p>
+            <img src="./assets/frozen-yogurt.png" alt="">
+        </div>
+        <div class="your-library__wrapper">
+            <p id="cheeseScore">0x</p>
+            <img src="./assets/cheese.png" alt="">
+        </div>
     </div>
     <div id="body" class="body">
         <button id="button" class="button" onclick="shaking()">Restart</button>
+        <div class="score">
+            <p id="instantScore">Shake phone to milk the cow</p>
+        </div>
     </div>
-    <div class="score">
-        <p id="instantScore">Click the start button</p>
+    <div class="goal">
+        <div class="goal__wrapper goal__head">
+            <p class="milkScore__head">Shakes:</p>
+            <p class="milkScore__head">Prize:</p>
+        </div>
+        <div class="goal__wrapper">
+            <p>30</p>
+            <div class="your-library__wrapper">
+                <p>1x</p>
+                <img src="./assets/milk.png" alt="">
+            </div>
+        </div>
+        <div class="goal__wrapper">
+            <p>80</p>
+            <div class="your-library__wrapper">
+                <p>1x</p>
+                <img src="./assets/yogurt.png" alt="">
+            </div>
+        </div>
+        <div class="goal__wrapper">
+            <p>120</p>
+            <div class="your-library__wrapper">
+                <p>1x</p>
+                <img src="./assets/frozen-yogurt.png" alt="">
+            </div>
+        </div>
+        <div class="goal__wrapper">
+            <p>200</p>
+            <div class="your-library__wrapper">
+                <p>1x</p>
+                <img src="./assets/cheese.png" alt="">
+            </div>
+        </div>
+    </div>
+    <div>
+
     </div>
 </body>
 <script src="shake.js"></script>
@@ -37,6 +93,10 @@
     var soundBegin = true;
     var score = '';
     var instantScore = '';
+    var milkScore = '';
+    var yougurtScore = '';
+    var iceCreamScore = '';
+    var cheeseScore = '';
 
     function isMobile() {
         if (/Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -45,24 +105,12 @@
         return false;
     }
 
-    function init() {
-        button = document.getElementById('button');
-        bodyShape = document.getElementById('body');
-        bodyShape.style.backgroundImage = 'url(./assets/cow.gif)';
-        button.innerText = "Start";
-        score = document.getElementById('score');
-        instantScore = document.getElementById('instantScore');
-        if (localStorage.getItem('scoreCow')) {
-            score.innerText = 'Highest score: ' + localStorage.getItem('scoreCow') + ' shakes';
-        }
-    }
-
     function shaking() {
         shakes = 0;
         finalTime = 0;
         soundBegin = true;
-        soundCow = document.getElementById('cowMoo');
-        soundCow.play();
+        // soundCow = document.getElementById('cowMoo');
+        // soundCow.play();
         instantScore.innerText = 'Shake phone to milk the cow';
         button.style.display = 'none';
         image = imageInit;
@@ -90,13 +138,81 @@
                     finalTime = Math.round((+new Date() - time) / 1000);
                     if (!localStorage.getItem('scoreCow') || shakes > parseInt(localStorage.getItem('scoreCow'))) {
                         localStorage.setItem('scoreCow', shakes)
-                        score.innerText = 'New score: ' + localStorage.getItem('scoreCow') + ' shakes';
-                        soundCow.src = './assets/cowMoo3.mp3';
+                        score.innerText = 'New highscore: ' + shakes + ' shakes';
+                        // soundCow.src = './assets/cowMoo3.mp3';
                     }
+                    setPrizes(shakes);
                     instantScore.innerText = 'Your score: ' + shakes + ' shakes in ' + finalTime + ' seconds';
                 }, 1000)
             }, false);
         }
+    }
+
+    function setPrizes(shakes) {
+        if (shakes >= 30) {
+            const resultMilk = localStorage.getItem('milkScore') ? parseInt(localStorage.getItem('milkScore')) + 1 : 1;
+            localStorage.setItem('milkScore', resultMilk)
+            milkScore.innerText = resultMilk + 'x';
+        }
+        if (shakes >= 80) {
+            const resultYogurt = localStorage.getItem('yogurtScore') ? parseInt(localStorage.getItem('yogurtScore')) + 1 : 1;
+            localStorage.setItem('yogurtScore', resultYogurt)
+            yogurtScore.innerText = resultYogurt + 'x';
+        }
+        if (shakes >= 120) {
+            const resultIceCream = localStorage.getItem('iceCreamScore') ? parseInt(localStorage.getItem('iceCreamScore')) + 1 : 1;
+            localStorage.setItem('iceCreamScore', resultCheese)
+            iceCreamScore.innerText = resultCheese + 'x';
+        }
+        if (shakes >= 200) {
+            const resultCheese = localStorage.getItem('cheeseScore') ? parseInt(localStorage.getItem('cheeseScore')) + 1 : 1;
+            localStorage.setItem('cheeseScore', resultCheese)
+            cheeseScore.innerText = resultCheese + 'x';
+        }
+    }
+
+    function init() {
+        button = document.getElementById('button');
+        bodyShape = document.getElementById('body');
+        bodyShape.style.backgroundImage = 'url(./assets/cow.gif)';
+        score = document.getElementById('score');
+        instantScore = document.getElementById('instantScore');
+        milkScore = document.getElementById('milkScore');
+        yogurtScore = document.getElementById('yogurtScore');
+        iceCreamScore = document.getElementById('iceCreamScore');
+        cheeseScore = document.getElementById('cheeseScore');
+        if (localStorage.getItem('scoreCow')) {
+            score.innerText = 'Highscore: ' + localStorage.getItem('scoreCow') + ' shakes';
+        }
+        var resultMilk = 0
+        var resultYogurt = 0
+        var resultIceCream = 0
+        var resultCheese = 0
+        if (localStorage.getItem('milkScore')) {
+            resultMilk = localStorage.getItem('milkScore');
+        } else {
+            localStorage.setItem('milkScore', 0);
+        }
+        milkScore.innerText = resultMilk + 'x';
+        if (localStorage.getItem('yogurtScore')) {
+            resultYogurt = localStorage.getItem('yogurtScore');
+        } else {
+            localStorage.setItem('yogurtScore', 0);
+        }
+        yogurtScore.innerText = resultYogurt + 'x';
+        if (localStorage.getItem('iceCreamScore')) {
+            resultIceCream = localStorage.getItem('iceCreamScore');
+        } else {
+            localStorage.setItem('iceCreamScore', 0);
+        }
+        cheeseScore.innerText = resultIceCream + 'x';
+        if (localStorage.getItem('cheeseScore')) {
+            resultCheese = localStorage.getItem('cheeseScore');
+        } else {
+            localStorage.setItem('cheeseScore', 0);
+        }
+        cheeseScore.innerText = resultCheese + 'x';
+        shaking();
     }
 
     document.addEventListener('DOMContentLoaded', init, false);
