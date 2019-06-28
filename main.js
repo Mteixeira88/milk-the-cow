@@ -118,9 +118,16 @@ function initScores(score) {
 }
 
 function showOnDesktop() {
-	var content = document.getElementById('content');
-	console.log(content)
-	document.removeChild(content);
+	//document.body.removeChild(buttonRestart);
+	var highScore = document.querySelector('.highscore');
+	var goal = document.querySelector('.goal');
+	var yourLibrary = document.querySelector('.your-library');
+	var backgroundTop = document.querySelector('.background-top');
+	document.body.removeChild(highScore);
+	document.body.removeChild(goal);
+	document.body.removeChild(yourLibrary);
+	document.body.removeChild(backgroundTop);
+	document.body.removeChild(bodyShape);
     var h1 = document.createElement("H1");
     var gif = document.createElement("IMG");
     gif.style.width = '600px'
@@ -132,11 +139,11 @@ function showOnDesktop() {
 }
 
 function init() {
+	getElementsOnPage()
     if (!isMobile()) {
         showOnDesktop();
         return;
     }
-    getElementsOnPage()
     bodyShape.style.backgroundImage = 'url(./assets/cow.gif)';
     scoresElements.highscoreElement.innerText = 'Highscore: ' + initScores('scoreCow') + ' shakes';
     scoresElements.milkScore.innerText = initScores('milkScore') + 'x';
