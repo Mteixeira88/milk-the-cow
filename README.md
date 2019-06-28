@@ -2,7 +2,7 @@
 
 Simple game where the goal is to have the maximum shakes possible in the less time.
 
-Check the game [here](https://milkthecow.today).
+You need a mobile device to play the game. Check it [here](https://milkthecow.today).
 
 ## Next steps:
 - Convert the game to iOS and Android app.
