@@ -96,6 +96,8 @@ p {
 
 .your-library__wrapper p {
     color: white;
+    flex-grow: 1;
+    text-align: right;
 }
 
 .your-library__wrapper img {
@@ -131,4 +133,22 @@ p {
 
 .milkScore__head {
     font-weight: 700;
+}
+
+.github {
+    display: flex;
+    background-color: white;
+    position: fixed;
+    padding: 0 8px 0 0;
+    bottom: 54px;
+    right: 0;
+    border-top-left-radius: 52px;
+    border-bottom-left-radius: 47px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.github__image {
+    width: 32px;
+    margin-right: 4px;
 }
