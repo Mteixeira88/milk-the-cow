@@ -1,8 +1,8 @@
-# Cow-shake game
+# Milk-the-cow game
 
 Simple game where the goal is to have the maximum shakes possible in the less time.
 
-Test it [here](https://milkthecow.today). The link is a test link I have.
+Check the game [here](https://milkthecow.today).
 
 ## Next steps:
 - Convert the game to iOS and Android app.
