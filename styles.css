@@ -26,7 +26,6 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    height: calc(100vh - 100px - 51px);
 }
 
 .score {

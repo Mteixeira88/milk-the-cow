@@ -10,67 +10,65 @@
 </head>
 
 <body>
-    <div id="content">
-        <div class="background-top"></div>
-        <div class="highscore">
-            <p id="score">Highscore: 0</p>
+    <div class="background-top"></div>
+    <div class="highscore">
+        <p id="score">Highscore: 0</p>
+    </div>
+    <div class="your-library">
+        <div class="your-library__wrapper">
+            <p id="milkScore">0x</p>
+            <img src="./assets/milk.png" alt="">
         </div>
-        <div class="your-library">
+        <div class="your-library__wrapper">
+            <p id="yogurtScore">0x</p>
+            <img src="./assets/yogurt.png" alt="">
+        </div>
+        <div class="your-library__wrapper">
+            <p id="iceCreamScore">0x</p>
+            <img src="./assets/frozen-yogurt.png" alt="">
+        </div>
+        <div class="your-library__wrapper">
+            <p id="cheeseScore">0x</p>
+            <img src="./assets/cheese.png" alt="">
+        </div>
+    </div>
+    <div id="body" class="body">
+        <button id="button" class="button" onclick="shaking()">Restart</button>
+        <div class="score">
+            <p id="instantScore">Shake phone to milk the cow</p>
+        </div>
+    </div>
+    <div class="goal">
+        <div class="goal__wrapper goal__head">
+            <p class="milkScore__head">Shakes:</p>
+            <p class="milkScore__head">Prize:</p>
+        </div>
+        <div class="goal__wrapper">
+            <p>30</p>
             <div class="your-library__wrapper">
-                <p id="milkScore">0x</p>
+                <p>1x</p>
                 <img src="./assets/milk.png" alt="">
             </div>
+        </div>
+        <div class="goal__wrapper">
+            <p>80</p>
             <div class="your-library__wrapper">
-                <p id="yogurtScore">0x</p>
+                <p>1x</p>
                 <img src="./assets/yogurt.png" alt="">
             </div>
+        </div>
+        <div class="goal__wrapper">
+            <p>120</p>
             <div class="your-library__wrapper">
-                <p id="iceCreamScore">0x</p>
+                <p>1x</p>
                 <img src="./assets/frozen-yogurt.png" alt="">
             </div>
+        </div>
+        <div class="goal__wrapper">
+            <p>200</p>
             <div class="your-library__wrapper">
-                <p id="cheeseScore">0x</p>
+                <p>1x</p>
                 <img src="./assets/cheese.png" alt="">
-            </div>
-        </div>
-        <div id="body" class="body">
-            <button id="button" class="button" onclick="shaking()">Restart</button>
-            <div class="score">
-                <p id="instantScore">Shake phone to milk the cow</p>
-            </div>
-        </div>
-        <div class="goal">
-            <div class="goal__wrapper goal__head">
-                <p class="milkScore__head">Shakes:</p>
-                <p class="milkScore__head">Prize:</p>
-            </div>
-            <div class="goal__wrapper">
-                <p>30</p>
-                <div class="your-library__wrapper">
-                    <p>1x</p>
-                    <img src="./assets/milk.png" alt="">
-                </div>
-            </div>
-            <div class="goal__wrapper">
-                <p>80</p>
-                <div class="your-library__wrapper">
-                    <p>1x</p>
-                    <img src="./assets/yogurt.png" alt="">
-                </div>
-            </div>
-            <div class="goal__wrapper">
-                <p>120</p>
-                <div class="your-library__wrapper">
-                    <p>1x</p>
-                    <img src="./assets/frozen-yogurt.png" alt="">
-                </div>
-            </div>
-            <div class="goal__wrapper">
-                <p>200</p>
-                <div class="your-library__wrapper">
-                    <p>1x</p>
-                    <img src="./assets/cheese.png" alt="">
-                </div>
             </div>
         </div>
     </div>

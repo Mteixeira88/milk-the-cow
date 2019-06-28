@@ -118,8 +118,9 @@ function initScores(score) {
 }
 
 function showOnDesktop() {
-    var content = document.getElementById('content');
-    document.body.removeChild(content);
+	var content = document.getElementById('content');
+	console.log(content)
+	document.removeChild(content);
     var h1 = document.createElement("H1");
     var gif = document.createElement("IMG");
     gif.style.width = '600px'
