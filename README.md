@@ -9,7 +9,7 @@ Check the game [here](https://milkthecow.today).
 
 ## Contributing
 
-1. Fork this project: [https://github.com/Mteixeira88/cow-shake](https://github.com/Mteixeira88/cow-shake)
+1. Fork this project: [https://github.com/Mteixeira88/cow-shake](https://github.com/Mteixeira88/milk-the-cow)
 2. Create your feature branch: `git checkout -b my-new-feature`
 3. Commit your changes: `git commit -am 'Add some feature'`
 4. Push to the branch: `git push origin my-new-feature`
