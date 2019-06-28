@@ -109,6 +109,9 @@ p {
     background: #2196F3;
     display: flex;
     box-shadow: 0 0 8px gray;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
 
 .goal__head {
