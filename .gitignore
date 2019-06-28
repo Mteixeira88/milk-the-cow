@@ -43,7 +43,6 @@ testem.log
 .DS_Store
 Thumbs.db
 *.scssc
-*.css
 *.map
 
 #storybook
