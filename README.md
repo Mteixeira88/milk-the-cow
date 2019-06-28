@@ -20,6 +20,13 @@ You need a mobile device to play the game. Check it [here](https://milkthecow.to
 **Miguel Teixeira**
 * <https://github.com/Mteixeira88>
 
+## Colaborators
+**Ruben Domingues**
+* <https://github.com/rcdd>
+
+**Abel Lopes**
+* <https://github.com/abelflopes>
+
 ## License
 
 This is free and unencumbered software released into the [public domain](UNLICENSE.txt). For more information,
