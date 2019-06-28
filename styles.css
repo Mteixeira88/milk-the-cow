@@ -6,7 +6,6 @@ body {
 }
 
 #content {
-    height: 100vh;
     display: flex;
     flex-direction: column;
 }
@@ -27,6 +26,7 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    height: calc(100vh - 100px - 51px);
 }
 
 .score {
@@ -109,9 +109,6 @@ p {
     background: #2196F3;
     display: flex;
     box-shadow: 0 0 8px gray;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
 }
 
 .goal__head {
