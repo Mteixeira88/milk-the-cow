@@ -5,6 +5,12 @@ body {
     flex-direction: column
 }
 
+#content {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 .background-top {
     background-color: #6dbd88;
     height: 100px;
