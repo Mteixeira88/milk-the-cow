@@ -5,6 +5,7 @@ Simple game where the goal is to have the maximum shakes possible in the less ti
 You need a mobile device to play the game. Check it [here](https://milkthecow.today).
 
 ## Next steps:
+- Add worldwide ranking table
 - Convert the game to iOS and Android app.
 
 ## Contributing
