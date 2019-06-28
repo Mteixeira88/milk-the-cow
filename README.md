@@ -1,4 +1,4 @@
-# Milk-the-cow-game
+# [Milk-the-cow game](https://milkthecow.today).
 
 Simple game where the goal is to have the maximum shakes possible in the less time.
 
