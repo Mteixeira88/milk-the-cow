@@ -1,0 +1,158 @@
+html, body {
+    height: 100%
+}
+
+body {
+    margin: 0;
+    font-family: 'Work Sans', sans-serif;
+    display: flex;
+    flex-direction: column
+}
+
+#content {
+    display: flex;
+    flex-direction: column;
+}
+
+.background-top {
+    background-color: #6dbd88;
+    height: 100px;
+}
+
+
+.body {
+    width: 100vw;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.score {
+    background: #ffffff91;
+    padding: 16px;
+}
+
+.score p {
+    margin: 0;
+    font-size: 1em;
+    text-align: center;
+    font-weight: 700;
+}
+
+.button {
+    font-size: 1em;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0;
+    margin-bottom: 16px;
+	white-space: nowrap;
+	box-sizing: border-box;
+	border-radius: 8px;
+	padding: 16px;
+	border: unset;
+	cursor: pointer;
+    position: relative;
+    width: 50vw;
+    color: white;
+    background-color: blue;
+    background-color: #03A9F4;
+	font-weight: 500;
+}
+
+.highscore {
+    position: absolute;
+    background: #03A9F4;
+    padding: 8px;
+    border-radius: 0 0 0 8px;
+    top: 0;
+    right: 0;
+}
+
+.highscore p {
+    color: white;
+    font-weight: bold;
+}
+
+p {
+    margin: 0;
+}
+
+.your-library {
+    position: absolute;
+    padding: 4px;
+    background: #03A9F4;
+    right: 0;
+    top: 35px;
+    border-radius: 0 0 0 8px;
+}
+
+.your-library__wrapper {
+    display: flex;
+    align-items: center;
+    margin-top: 4px;
+}
+
+.your-library__wrapper p {
+    color: white;
+    flex-grow: 1;
+    text-align: right;
+}
+
+.your-library__wrapper img {
+    width: 30px;
+    margin-left: 4px;
+}
+
+.goal {
+    padding: 4px;
+    background: #2196F3;
+    display: flex;
+    box-shadow: 0 0 8px gray;
+}
+
+.goal__head {
+    margin-left: 0;
+}
+
+.goal__wrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-left: 16px;
+}
+
+.goal__wrapper p {
+    color: white;
+}
+
+.goal__wrapper img {
+    width: 20px;
+}
+
+.milkScore__head {
+    font-weight: 700;
+}
+
+.github {
+    display: flex;
+    background-color: white;
+    position: fixed;
+    padding: 0 8px 0 0;
+    bottom: 54px;
+    right: 0;
+    border-top-left-radius: 52px;
+    border-bottom-left-radius: 47px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.github__image {
+    width: 32px;
+    margin-right: 4px;
+}
