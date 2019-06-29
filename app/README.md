@@ -1,3 +1,7 @@
+```bash
+$ bower install
+```
+
 # run cordova
 
 ## add platform (once)
