@@ -18,13 +18,17 @@ function post_handler()
 {
     $data = json_decode($_POST['data'], true);
     $action = $data['action'];
-    if ($data['args']) {
-        $args = $data['args'];
+    if (!$action) {
+        if ($data['args']) {
+            $args = $data['args'];
+        } else {
+            $args = [];
+        }
+        $result = call_user_func_array($action, $args);
+        echo json_encode($result);
     } else {
-        $args = [];
+        echo 'Error';
     }
-    $result = call_user_func_array($action, $args);
-    echo json_encode($result);
 }
 
 function get_handler()
