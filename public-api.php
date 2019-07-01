@@ -1,6 +1,6 @@
 <?php
-require_once('config.php');
 header('Access-Control-Allow-Origin: *');
+require_once('config.php');
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
@@ -39,7 +39,7 @@ function get_handler()
 
 function viewRanking()
 {
-    $sql = 'SELECT * FROM ranking';
+    $sql = 'SELECT * FROM ranking ORDER BY score DESC LIMIT 5';
     if ($result = query($sql)) {
         if (mysqli_num_rows($result) > 0) {
             $rankingTable = [];
@@ -54,6 +54,19 @@ function viewRanking()
         return "ERROR: Could not able to execute $sql. ";
     }
     return $rankingTable;
+}
+
+
+function insertScore($value)
+{
+    $sql = 'INSERT INTO `ranking` (`id`, `score`) VALUES (NULL, ' + $value + ')';
+    if ($result = query($sql)) {
+        unset($result);
+        return true;
+
+    } else {
+        return "ERROR: Could not able to execute $sql. ";
+    }
 }
 
 ?>
