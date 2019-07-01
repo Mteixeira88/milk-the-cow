@@ -14,22 +14,39 @@ body {
     flex-direction: column;
 }
 
-.background-top {
-    background-color: #6dbd88;
-    height: 100px;
-}
-
 
 .body {
+    height: 100vh;
     width: 100vw;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
     flex-grow: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    background-color: #6dbd88;
+}
+
+.background-image {
+    display: flex;
+    width: 100vw;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    height: 50%;
+}
+
+.background-image img {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.background-image .hidden {
+    display: none;
 }
 
 .score {
@@ -46,23 +63,21 @@ body {
 
 .button {
     font-size: 1em;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	margin: 0;
-    margin-bottom: 16px;
-	white-space: nowrap;
-	box-sizing: border-box;
-	border-radius: 8px;
-	padding: 16px;
-	border: unset;
-	cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 16px;
+    white-space: nowrap;
+    box-sizing: border-box;
+    border-radius: 8px;
+    padding: 16px;
+    border: unset;
+    cursor: pointer;
     position: relative;
     width: 50vw;
     color: white;
-    background-color: blue;
     background-color: #03A9F4;
-	font-weight: 500;
+    font-weight: 500;
 }
 
 .highscore {
@@ -72,6 +87,7 @@ body {
     border-radius: 0 0 0 8px;
     top: 0;
     right: 0;
+    z-index: 1;
 }
 
 .highscore p {
@@ -88,8 +104,9 @@ p {
     padding: 4px;
     background: #03A9F4;
     right: 0;
-    top: 35px;
+    top: 30px;
     border-radius: 0 0 0 8px;
+    z-index: 1;
 }
 
 .your-library__wrapper {
@@ -114,6 +131,7 @@ p {
     background: #2196F3;
     display: flex;
     box-shadow: 0 0 8px gray;
+    z-index: 1;
 }
 
 .goal__head {
@@ -155,4 +173,13 @@ p {
 .github__image {
     width: 32px;
     margin-right: 4px;
+}
+
+.info {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    bottom: 100px;
 }

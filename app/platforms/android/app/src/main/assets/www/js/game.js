@@ -1,126 +1,130 @@
-Game = function() {
+Game = function () {
+    const shakeEvent = new Shake({threshold: 10, timeout: 100});
+    let timingOver;
+    let time;
+    let buttonRestart;
+    let imageInit;
+    let imageEnd;
+    let finalTime = 0;
+    let shakes = 0;
 
-    var shakeEvent = new Shake({ threshold: 25, timeout: 300 });
-    var finish = false;
-    var timingOver;
-    var time;
-    var buttonRestart;
-    var bodyShape;
-    var finalTime = 0;
-    var shakes = 0;
-    
-    var images = {
-        toShow: './assets/cow_init.gif',
+    /*let images = {
         init: './assets/cow_init.gif',
         shaking: './assets/cow_shake.gif',
         end: './assets/cow_end.gif'
-    }
-    
-    var scoreElements = {
-        highscoreElement: undefined,
+    };*/
+
+    let scoreElements = {
+        highScoreElement: undefined,
         instantScore: undefined,
         milkScore: undefined,
-        yougurtScore: undefined,
+        yogurtScore: undefined,
         iceCreamScore: undefined,
         cheeseScore: undefined,
-    }
-    
-    function initShaking() {
-        images.toShow = images.shaking;
-        bodyShape.style.backgroundImage = 'url(' + images.shaking + ')';
-        time = +new Date();
-    }
-    
+    };
+
     function endShaking() {
+        window.removeEventListener('shake', onShaking, false);
+        shakeEvent.stop();
         clearTimeout(timingOver);
         buttonRestart.innerText = "Restart";
-        shakeEvent.stop();
-        bodyShape.style.backgroundImage = 'url(' + images.end + ')';
+        navigator.vibrate(500);
+        imageInit.style.display = 'none';
+        imageEnd.style.display = 'block';
         buttonRestart.style.display = 'block';
         finalTime = Math.round((+new Date() - time) / 1000);
         if (!localStorage.getItem('scoreCow') || shakes > parseInt(localStorage.getItem('scoreCow'))) {
-            localStorage.setItem('scoreCow', shakes)
-            scoreElements.highscoreElement.innerText = 'New highscore: ' + shakes + ' shakes';
+            localStorage.setItem('scoreCow', shakes.toString());
+            scoreElements.highScoreElement.innerText = 'New highscore: ' + shakes + ' shakes';
         }
         setPrizes(shakes);
         scoreElements.instantScore.innerText = 'Your score: ' + shakes + ' shakes in ' + finalTime + ' seconds';
     }
-    
-    function shaking() {
+
+    const onShaking = () => {
+        clearTimeout(timingOver);
+        if (shakes === 0) {
+            time = 0;
+            time = +new Date();
+        }
+        shakes += 1;
+        timingOver = setTimeout(() => endShaking(), 1000)
+    };
+
+    function readyShake() {
         shakeEvent.start();
         shakes = 0;
         finalTime = 0;
         scoreElements.instantScore.innerText = 'Shake phone to milk the cow';
         buttonRestart.style.display = 'none';
-        images.toShow = images.init;
-        bodyShape.style.backgroundImage = 'url(' + images.toShow + ')';
-        window.addEventListener('shake', () => {
-            clearTimeout(timingOver);
-            if (shakes === 0) {
-                initShaking();
-            }
-            shakes += 1;
-            timingOver = setTimeout(() => {
-                endShaking();
-            }, 1000)
-        }, false);
+        imageInit.style.display = 'block';
+        imageEnd.style.display = 'none';
+        window.addEventListener('shake', onShaking, false);
     }
-    
+
     function setPrizes(shakes) {
-        if (shakes >= 30) {
-            const resultMilk = localStorage.getItem('milkScore') ? parseInt(localStorage.getItem('milkScore')) + 1 : 1;
-            localStorage.setItem('milkScore', resultMilk)
-            scoreElements.milkScore.innerText = resultMilk + 'x';
-        }
-        if (shakes >= 80) {
-            const resultYogurt = localStorage.getItem('yogurtScore') ? parseInt(localStorage.getItem('yogurtScore')) + 1 : 1;
-            localStorage.setItem('yogurtScore', resultYogurt)
-            scoreElements.yogurtScore.innerText = resultYogurt + 'x';
-        }
-        if (shakes >= 120) {
-            const resultIceCream = localStorage.getItem('iceCreamScore') ? parseInt(localStorage.getItem('iceCreamScore')) + 1 : 1;
-            localStorage.setItem('iceCreamScore', resultIceCream)
-            scoreElements.iceCreamScore.innerText = resultIceCream + 'x';
-        }
-        if (shakes >= 200) {
-            const resultCheese = localStorage.getItem('cheeseScore') ? parseInt(localStorage.getItem('cheeseScore')) + 1 : 1;
-            localStorage.setItem('cheeseScore', resultCheese)
-            scoreElements.cheeseScore.innerText = resultCheese + 'x';
+        let _shakes = shakes;
+        while (_shakes >= 30) {
+            if (_shakes >= 200) {
+                const resultCheese = localStorage.getItem('cheeseScore') ? parseInt(localStorage.getItem('cheeseScore')) + 1 : 1;
+                localStorage.setItem('cheeseScore', resultCheese);
+                scoreElements.cheeseScore.innerText = resultCheese + 'x';
+                _shakes -= 200;
+            } else if (_shakes >= 120) {
+                const resultIceCream = localStorage.getItem('iceCreamScore') ? parseInt(localStorage.getItem('iceCreamScore')) + 1 : 1;
+                localStorage.setItem('iceCreamScore', resultIceCream);
+                scoreElements.iceCreamScore.innerText = resultIceCream + 'x';
+                _shakes -= 120;
+            } else if (_shakes >= 80) {
+                const resultYogurt = localStorage.getItem('yogurtScore') ? parseInt(localStorage.getItem('yogurtScore')) + 1 : 1;
+                localStorage.setItem('yogurtScore', resultYogurt);
+                scoreElements.yogurtScore.innerText = resultYogurt + 'x';
+                _shakes -= 80;
+            } else if (_shakes >= 30) {
+                const resultMilk = localStorage.getItem('milkScore') ? parseInt(localStorage.getItem('milkScore')) + 1 : 1;
+                localStorage.setItem('milkScore', resultMilk);
+                scoreElements.milkScore.innerText = resultMilk + 'x';
+                _shakes -= 30;
+            }
         }
     }
-    
+
     function getElementsOnPage() {
         buttonRestart = document.getElementById('button');
-        bodyShape = document.getElementById('body');
-        scoreElements.highscoreElement = document.getElementById('score');
+        imageInit = document.getElementById('image-init');
+        imageEnd = document.getElementById('image-end');
+        scoreElements.highScoreElement = document.getElementById('score');
         scoreElements.instantScore = document.getElementById('instantScore');
         scoreElements.milkScore = document.getElementById('milkScore');
         scoreElements.yogurtScore = document.getElementById('yogurtScore');
         scoreElements.iceCreamScore = document.getElementById('iceCreamScore');
         scoreElements.cheeseScore = document.getElementById('cheeseScore');
     }
-    
-    function initScores(score) {
-        var result = 0;
+
+    function getScore(score) {
+        let result = 0;
         if (localStorage.getItem(score)) {
-            result = localStorage.getItem(score);
+            result = parseInt(localStorage.getItem(score), 0);
         } else {
-            localStorage.setItem(score, result);
+            localStorage.setItem(score, result.toString());
         }
         return result
     }
-    
+
     function init() {
-        getElementsOnPage()
-        
-        bodyShape.style.backgroundImage = 'url(./assets/cow.gif)';
-        scoreElements.highscoreElement.innerText = 'Highscore: ' + initScores('scoreCow') + ' shakes';
-        scoreElements.milkScore.innerText = initScores('milkScore') + 'x';
-        scoreElements.yogurtScore.innerText = initScores('yogurtScore') + 'x';
-        scoreElements.iceCreamScore.innerText = initScores('iceCreamScore') + 'x';
-        scoreElements.cheeseScore.innerText = initScores('cheeseScore') + 'x';
-        shaking();
+        getElementsOnPage();
+        // disallow lock screen
+        window.plugins.insomnia.keepAwake();
+        imageInit.style.display = 'block';
+        imageEnd.style.display = 'none';
+        scoreElements.highScoreElement.innerText = 'Highscore: ' + getScore('scoreCow') + ' shakes';
+        scoreElements.milkScore.innerText = getScore('milkScore') + 'x';
+        scoreElements.yogurtScore.innerText = getScore('yogurtScore') + 'x';
+        scoreElements.iceCreamScore.innerText = getScore('iceCreamScore') + 'x';
+        scoreElements.cheeseScore.innerText = getScore('cheeseScore') + 'x';
+        buttonRestart.addEventListener('click', () => readyShake());
+        readyShake();
     }
-    
+
     init();
 };

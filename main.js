@@ -18,7 +18,7 @@ var scoreElements = {
     highscoreElement: undefined,
     instantScore: undefined,
     milkScore: undefined,
-    yougurtScore: undefined,
+    yogurtScore: undefined,
     iceCreamScore: undefined,
     cheeseScore: undefined,
 }
