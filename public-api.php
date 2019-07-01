@@ -61,8 +61,8 @@ function insertScore($value)
 {
     $date = new Date();
     $sql = "INSERT INTO ranking (id, score, timestamp) VALUES (NULL, '$value','$date')";
-    if (query($sql)) {
-        return true;
+    if ($result = query($sql)) {
+        return $result;
     } else {
         return "ERROR: Could not able to execute $sql. ";
     }
