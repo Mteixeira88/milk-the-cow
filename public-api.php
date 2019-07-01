@@ -1,5 +1,6 @@
 <?php
 require_once('config.php');
+header('Access-Control-Allow-Origin: *');
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
