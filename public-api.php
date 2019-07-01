@@ -2,6 +2,34 @@
 header('Access-Control-Allow-Origin: *');
 require_once('config.php');
 
+function get_client_ip()
+{
+    if (isset($_SERVER['HTTP_CLIENT_IP']))
+        $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+    else if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    else if (isset($_SERVER['HTTP_X_FORWARDED']))
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+    else if (isset($_SERVER['HTTP_FORWARDED_FOR']))
+        $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+    else if (isset($_SERVER['HTTP_FORWARDED']))
+        $ipaddress = $_SERVER['HTTP_FORWARDED'];
+    else if (isset($_SERVER['REMOTE_ADDR']))
+        $ipaddress = $_SERVER['REMOTE_ADDR'];
+    else
+        $ipaddress = 'UNKNOWN';
+    return $ipaddress;
+}
+
+function get_location()
+{
+    $PublicIP = get_client_ip();
+    $json = file_get_contents("http://ipinfo.io/$PublicIP/geo");
+    $json = json_decode($json, true);
+    $UserLocation = $json['country'] . ' - ' . $json['region'] . ' - ' . $json['city'];
+    return [$PublicIP, $UserLocation];
+}
+
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
         post_handler();
@@ -18,17 +46,13 @@ function post_handler()
 {
     $data = json_decode($_POST['data'], true);
     $action = $data['action'];
-    if (!$action) {
-        if ($data['args']) {
-            $args = $data['args'];
-        } else {
-            $args = [];
-        }
-        $result = call_user_func_array($action, $args);
-        echo json_encode($result);
+    if ($data['args']) {
+        $args = $data['args'];
     } else {
-        echo 'Error';
+        $args = [];
     }
+    $result = call_user_func_array($action, [$args]);
+    echo json_encode($result);
 }
 
 function get_handler()
@@ -63,9 +87,9 @@ function viewRanking()
 
 function insertScore($value)
 {
-    return $value;
-    $date = new Date();
-    $sql = "INSERT INTO ranking (id, score, timestamp) VALUES (NULL, '$value','$date')";
+    $timestamp = date('Y-m-d G:i:s');
+    $userDetails = get_location();
+    $sql = "INSERT INTO ranking (id, score, timestamp, ip, location) VALUES (NULL, '$value', '$timestamp', '$userDetails[0]', '$userDetails[1]')";
     if ($result = query($sql)) {
         return $result;
     } else {

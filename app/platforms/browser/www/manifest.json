@@ -3,12 +3,12 @@
   "display": "standalone",
   "name": "Milk the Cow",
   "short_name": "Milk the Cow",
-  "version": "io.cordova.milkthecow",
-  "description": "A sample Apache Cordova application that responds to the deviceready event.",
-  "author": "Cow Team",
+  "version": "today.milkthecow.game",
+  "description": "A pleasure game to get milk from the cow.",
+  "author": "'Milkthecow' Team",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "logo.png",
       "type": "image/png",
       "sizes": "undefinedxundefined"
     }

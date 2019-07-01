@@ -12,7 +12,8 @@
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
     <meta http-equiv="Content-Security-Policy"
-          content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+          content="default-src * gap: ws: https://ssl.gstatic.com;style-src * 'unsafe-inline' 'self' data: blob:;script-src * 'unsafe-inline' 'unsafe-eval' data: blob:;img-src * data: 'unsafe-inline' 'self' content:;fmedia-src mediastream;">
+
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
@@ -52,7 +53,7 @@
         <img id="image-end" class="hidden" src="assets/cow_end.gif" alt="">
     </div>
     <div class="info">
-        <button id="button" class="button" onclick="shaking()">Restart</button>
+        <button id="button" class="button">Restart</button>
         <div class="score">
             <p id="instantScore">Shake phone to milk the cow</p>
         </div>
@@ -97,6 +98,8 @@
 <script type="text/javascript" src="./js/shake.js"></script>
 <script type="text/javascript" src="./js/game.js"></script>
 <script type="text/javascript" src="./js/index.js"></script>
+<script type="text/javascript" src="./js/rest.js"></script>
+<script type="text/javascript" src="./js/rest.js"></script>
 </body>
 
 </html>
