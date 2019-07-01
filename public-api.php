@@ -59,6 +59,7 @@ function viewRanking()
 
 function insertScore($value)
 {
+    return $value;
     $date = new Date();
     $sql = "INSERT INTO ranking (id, score, timestamp) VALUES (NULL, '$value','$date')";
     if ($result = query($sql)) {
