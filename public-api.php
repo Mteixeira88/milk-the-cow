@@ -59,11 +59,10 @@ function viewRanking()
 
 function insertScore($value)
 {
-    $sql = 'INSERT INTO `ranking` (`id`, `score`) VALUES (NULL, ' + $value + ')';
-    if ($result = query($sql)) {
-        unset($result);
+    $date = new Date();
+    $sql = "INSERT INTO ranking (id, score, timestamp) VALUES (NULL, '$value','$date')";
+    if (query($sql)) {
         return true;
-
     } else {
         return "ERROR: Could not able to execute $sql. ";
     }
