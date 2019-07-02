@@ -39,11 +39,7 @@ Game = function () {
         }
         setPrizes(shakes);
         scoreElements.instantScore.innerText = 'Your score: ' + shakes + ' shakes in ' + finalTime + ' seconds';
-        rest('insertScore', shakes).then((res) => {
-            console.log('works', res);
-        }).catch(e => {
-            console.warn('eerrror', e);
-        });
+        rest('insertScore', shakes);
     }
 
     const onShaking = () => {

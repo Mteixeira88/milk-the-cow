@@ -1,6 +1,6 @@
 function rest(action, args) {
-    // const endpoint = 'https://milkthecow.today/public-api.php';
-    const endpoint = 'http://192.168.1.235:8080/public-api.php';
+    const endpoint = 'https://milkthecow.today/public-api.php';
+    // const endpoint = 'http://192.168.1.235:8080/public-api.php';
     return new Promise((resolve, reject) => {
         const params = "data=" + JSON.stringify({
             action: action,
