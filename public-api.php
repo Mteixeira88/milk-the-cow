@@ -24,7 +24,20 @@ function post_handler()
     } else {
         $args = [];
     }
-    $result = call_user_func_array($action, [$args]);
+
+    try {
+        if (is_callable($action)) {
+            $result = call_user_func_array($action, [$args]);
+        } else {
+            throw new Exception("$action is not callable");
+        }
+        if (!$result) {
+            throw new \RuntimeException("Some error occurred with your request. Your action is '" . $action . "' and your args are '" . join($args) . "'");
+        }
+    } catch (\Exception $e) {
+        http_response_code(501);
+        $result = array('message' => $e->getMessage());
+    }
     echo json_encode($result);
 }
 

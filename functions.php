@@ -21,6 +21,9 @@ function viewRanking()
 
 function insertScore($value)
 {
+    if (!$value) {
+        return false;
+    }
     $timestamp = date('Y-m-d G:i:s');
     $userDetails = get_location();
     $sql = "INSERT INTO ranking (id, score, timestamp, ip, location) VALUES (NULL, '$value', '$timestamp', '$userDetails[0]', '$userDetails[1]')";
