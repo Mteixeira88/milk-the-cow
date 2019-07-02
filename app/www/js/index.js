@@ -1,6 +1,6 @@
 document.addEventListener('deviceready', function () {
     new Game();
-    rest('viewRanking').then(async data => {
+    /*rest('viewRanking').then(async data => {
         console.log(data);
         let rank = '';
         await data.forEach((score, index) => {
@@ -15,5 +15,5 @@ document.addEventListener('deviceready', function () {
         rankElm.style.backgroundColor = '#03A9F4';
         rankElm.style.color = 'white';
         document.body.append(rankElm);
-    })
+    })*/
 });

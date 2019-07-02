@@ -11,7 +11,6 @@ function rest(action, args) {
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.DONE) {
-                console.log(xhr.responseText);
                 resolve(JSON.parse(xhr.responseText));
             }
         };
