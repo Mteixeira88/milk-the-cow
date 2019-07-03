@@ -1,12 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="today.milkthecow.game" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="today.milkthecow.game" version="1.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Milk the Cow</name>
     <description>
         A pleasure game to get milk from the cow.
     </description>
-    <author email="game@milkthecow.today">
-        'Milkthecow' Team
-    </author>
+    <author email="rcdd93@gmail.com">Ruben Domingues</author>
+    <author email="mteixeira88013@gmail.com">'Miguel Teixeira</author>
     <content src="index.html" />
     <icon src="logo.png" />
     <access origin="*" />
@@ -23,11 +22,11 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
-    <engine name="browser" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <preference name="Orientation" value="portrait" />
     <preference name="Fullscreen" value="true" />
     <plugin name="cordova-plugin-vibration" spec="^3.1.0" />
     <plugin name="cordova-plugin-insomnia" spec="https://github.com/EddyVerbruggen/Insomnia-PhoneGap-Plugin.git" />
-    <engine name="android" spec="^8.0.0" />
+    <engine name="browser" spec="^5.0.4" />
+    <engine name="android" spec="^7.0.0" />
 </widget>

@@ -1,6 +1,6 @@
 {
-  "name": "HelloCordova",
-  "short_name": "HelloCordova",
+  "name": "Milk the Cow",
+  "short_name": "Milk the Cow",
   "description": "Description of your app from template",
   "start_url": "index.html",
   "scope": "index.html",

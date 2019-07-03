@@ -10,12 +10,13 @@
       "cordova-plugin-insomnia": {}
     },
     "platforms": [
-      "android",
-      "browser"
+      "browser",
+      "android"
     ]
   },
   "dependencies": {
-    "cordova-android": "^8.0.0",
+    "cordova-android": "^7.0.0",
+    "cordova-browser": "^5.0.4",
     "cordova-plugin-insomnia": "git+https://github.com/EddyVerbruggen/Insomnia-PhoneGap-Plugin.git",
     "cordova-plugin-vibration": "^3.1.0",
     "cordova-plugin-whitelist": "1",

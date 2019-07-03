@@ -27,7 +27,7 @@ Game = function () {
         window.removeEventListener('shake', onShaking, false);
         shakeEvent.stop();
         clearTimeout(timingOver);
-        buttonRestart.innerText = "Restart";
+        buttonRestart.innerText = i18n("Restart");
         navigator.vibrate(500);
         imageInit.style.display = 'none';
         imageEnd.style.display = 'block';
@@ -35,10 +35,10 @@ Game = function () {
         finalTime = Math.round((+new Date() - time) / 1000);
         if (!localStorage.getItem('scoreCow') || shakes > parseInt(localStorage.getItem('scoreCow'))) {
             localStorage.setItem('scoreCow', shakes.toString());
-            scoreElements.highScoreElement.innerText = 'New highscore: ' + shakes + ' shakes';
+            scoreElements.highScoreElement.innerText = i18n('New high score', {shakes: shakes})
         }
         setPrizes(shakes);
-        scoreElements.instantScore.innerText = 'Your score: ' + shakes + ' shakes in ' + finalTime + ' seconds';
+        scoreElements.instantScore.innerText = i18n('Your score', {shakes: shakes, time: finalTime});
         rest('insertScore', shakes);
     }
 
@@ -56,7 +56,7 @@ Game = function () {
         shakeEvent.start();
         shakes = 0;
         finalTime = 0;
-        scoreElements.instantScore.innerText = 'Shake phone to milk the cow';
+        scoreElements.instantScore.innerText = i18n('Shake phone to milk the cow');
         buttonRestart.style.display = 'none';
         imageInit.style.display = 'block';
         imageEnd.style.display = 'none';
@@ -113,17 +113,20 @@ Game = function () {
     }
 
     function init() {
+        console.log(i18n.translator);
         getElementsOnPage();
         // disallow lock screen
         window.plugins.insomnia.keepAwake();
         imageInit.style.display = 'block';
         imageEnd.style.display = 'none';
-        scoreElements.highScoreElement.innerText = 'Highscore: ' + getScore('scoreCow') + ' shakes';
+        const scoreShakes = getScore('scoreCow');
+        scoreElements.highScoreElement.innerText = i18n('High score', {shakes: scoreShakes});
+        console.log(i18n('High score', {shakes: scoreShakes}));
         scoreElements.milkScore.innerText = getScore('milkScore') + 'x';
         scoreElements.yogurtScore.innerText = getScore('yogurtScore') + 'x';
         scoreElements.iceCreamScore.innerText = getScore('iceCreamScore') + 'x';
         scoreElements.cheeseScore.innerText = getScore('cheeseScore') + 'x';
-        buttonRestart.addEventListener('click', () => readyShake());
+        buttonRestart.addEventListener('touchstart', () => readyShake());
         readyShake();
     }
 

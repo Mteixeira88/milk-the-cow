@@ -7,14 +7,14 @@
     "files": {}
   },
   "installed_plugins": {
-    "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "io.cordova.milkthecow"
+    "cordova-plugin-insomnia": {
+      "PACKAGE_NAME": "today.milkthecow.game"
     },
     "cordova-plugin-vibration": {
-      "PACKAGE_NAME": "io.cordova.milkthecow"
+      "PACKAGE_NAME": "today.milkthecow.game"
     },
-    "cordova-plugin-insomnia": {
-      "PACKAGE_NAME": "io.cordova.milkthecow"
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "today.milkthecow.game"
     }
   },
   "dependent_plugins": {}

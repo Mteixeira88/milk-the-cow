@@ -50,7 +50,7 @@ body {
 }
 
 .score {
-    background: #ffffff91;
+    background: rgba(230, 230, 230, 0.51);
     padding: 16px;
 }
 
