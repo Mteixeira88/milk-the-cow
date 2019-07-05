@@ -1,4 +1,0 @@
-#Tue Jul 02 12:24:19 WEST 2019
-base.0=/Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/build/intermediates/transforms/dex/release/0
-renamed.0=classes.dex
-file.0=/Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/build/intermediates/transforms/dex/release/0/classes.dex

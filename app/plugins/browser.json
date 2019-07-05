@@ -15,7 +15,23 @@
     },
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "today.milkthecow.game"
+    },
+    "cordova-plugin-ble-central": {
+      "PACKAGE_NAME": "today.milkthecow.game"
+    },
+    "cordova-plugin-ble-peripheral": {
+      "PACKAGE_NAME": "today.milkthecow.game"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "today.milkthecow.game"
+    },
+    "cordova-plugin-device-name": {
+      "PACKAGE_NAME": "today.milkthecow.game"
     }
   },
-  "dependent_plugins": {}
+  "dependent_plugins": {
+    "cordova-plugin-compat": {
+      "PACKAGE_NAME": "today.milkthecow.game"
+    }
+  }
 }

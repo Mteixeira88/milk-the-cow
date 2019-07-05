@@ -7,6 +7,15 @@
     "files": {}
   },
   "installed_plugins": {
+    "cordova-plugin-ble-central": {
+      "PACKAGE_NAME": "today.milkthecow.game"
+    },
+    "cordova-plugin-ble-peripheral": {
+      "PACKAGE_NAME": "today.milkthecow.game"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "today.milkthecow.game"
+    },
     "cordova-plugin-insomnia": {
       "PACKAGE_NAME": "today.milkthecow.game"
     },
@@ -14,6 +23,9 @@
       "PACKAGE_NAME": "today.milkthecow.game"
     },
     "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "today.milkthecow.game"
+    },
+    "cordova-plugin-device-name": {
       "PACKAGE_NAME": "today.milkthecow.game"
     }
   },

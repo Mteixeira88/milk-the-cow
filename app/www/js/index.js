@@ -1,5 +1,12 @@
+function eventListenner() {
+    const singlePlayElm = document.getElementById('singlePlay');
+    singlePlayElm.addEventListener('touchstart', () => window.location.href = 'single_play.html');
+    const multiPlayElm = document.getElementById('multiPlay');
+    multiPlayElm.addEventListener('touchstart', () => window.location.href = 'multi_play.html');
+}
+
 document.addEventListener('deviceready', function () {
-    new Game();
+    eventListenner();
     /*rest('viewRanking').then(async data => {
         console.log(data);
         let rank = '';

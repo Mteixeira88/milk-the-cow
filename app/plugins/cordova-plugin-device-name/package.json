@@ -1,0 +1,67 @@
+{
+  "_from": "cordova-plugin-device-name",
+  "_id": "cordova-plugin-device-name@1.3.5",
+  "_inBundle": false,
+  "_integrity": "sha512-mCA8e7a1X5Qo7PnQmz4bScKAbGANiIguTCzoValK8evQHRe0wUeCEMW9/qA8puIpr+AoUAeC6q9O8prMhtU9ng==",
+  "_location": "/cordova-plugin-device-name",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "cordova-plugin-device-name",
+    "name": "cordova-plugin-device-name",
+    "escapedName": "cordova-plugin-device-name",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-device-name/-/cordova-plugin-device-name-1.3.5.tgz",
+  "_shasum": "17c54a2f5dddd17af580e390de0547a2beeb8282",
+  "_spec": "cordova-plugin-device-name",
+  "_where": "/Users/rubendomingues/Documents/GitHub/milk-the-cow/app",
+  "author": {
+    "name": "Sylvain Bréjeon",
+    "url": "https://github.com/becvert"
+  },
+  "bugs": {
+    "url": "https://github.com/becvert/cordova-plugin-device-name/issues"
+  },
+  "bundleDependencies": false,
+  "contributors": [
+    {
+      "name": "Philipp Kursawe",
+      "url": "https://github.com/pke"
+    }
+  ],
+  "cordova": {
+    "id": "cordova-plugin-device-name",
+    "platforms": [
+      "android",
+      "ios",
+      "windows"
+    ]
+  },
+  "deprecated": false,
+  "description": "Cordova Device Name Plugin",
+  "homepage": "https://github.com/becvert/cordova-plugin-device-name",
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-windows",
+    "cordova-ios",
+    "cordova",
+    "device",
+    "name"
+  ],
+  "license": "MIT",
+  "name": "cordova-plugin-device-name",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/becvert/cordova-plugin-device-name.git"
+  },
+  "version": "1.3.5"
+}

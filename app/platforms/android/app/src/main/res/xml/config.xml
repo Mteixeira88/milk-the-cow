@@ -1,11 +1,23 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="today.milkthecow.game" version="1.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <feature name="BLE">
+        <param name="android-package" value="com.megster.cordova.ble.central.BLECentralPlugin" />
+    </feature>
+    <feature name="BLEPeripheral">
+        <param name="android-package" value="com.megster.cordova.ble.peripheral.BLEPeripheralPlugin" />
+    </feature>
+    <feature name="Device">
+        <param name="android-package" value="org.apache.cordova.device.Device" />
+    </feature>
     <feature name="Insomnia">
         <param name="android-package" value="nl.xservices.plugins.Insomnia" />
     </feature>
     <feature name="Whitelist">
         <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
         <param name="onload" value="true" />
+    </feature>
+    <feature name="DeviceName">
+        <param name="android-package" value="net.becvert.cordova.DeviceName" />
     </feature>
     <name>Milk the Cow</name>
     <description>

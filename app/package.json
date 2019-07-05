@@ -7,7 +7,13 @@
     "plugins": {
       "cordova-plugin-whitelist": {},
       "cordova-plugin-vibration": {},
-      "cordova-plugin-insomnia": {}
+      "cordova-plugin-insomnia": {},
+      "cordova-plugin-ble-central": {
+        "BLUETOOTH_USAGE_DESCRIPTION": "Used to communicate with your friends to play in multiplayer."
+      },
+      "cordova-plugin-ble-peripheral": {},
+      "cordova-plugin-device": {},
+      "cordova-plugin-device-name": {}
     },
     "platforms": [
       "browser",
@@ -17,6 +23,11 @@
   "dependencies": {
     "cordova-android": "^7.0.0",
     "cordova-browser": "^5.0.4",
+    "cordova-plugin-ble-central": "^1.2.2",
+    "cordova-plugin-ble-peripheral": "^1.0.0",
+    "cordova-plugin-compat": "^1.2.0",
+    "cordova-plugin-device": "^2.0.3",
+    "cordova-plugin-device-name": "^1.3.5",
     "cordova-plugin-insomnia": "git+https://github.com/EddyVerbruggen/Insomnia-PhoneGap-Plugin.git",
     "cordova-plugin-vibration": "^3.1.0",
     "cordova-plugin-whitelist": "1",

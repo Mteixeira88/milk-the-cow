@@ -1,13 +1,13 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:2:1-15:12
-INJECTED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:2:1-15:12
-INJECTED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:2:1-15:12
-INJECTED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:2:1-15:12
+ADDED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:2:1-19:12
+INJECTED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:2:1-19:12
+INJECTED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:2:1-19:12
+INJECTED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:2:1-19:12
 MERGED from [:CordovaLib] /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/CordovaLib/build/intermediates/manifests/full/debug/AndroidManifest.xml:20:1-27:12
-INJECTED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:2:1-15:12
-INJECTED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:2:1-15:12
-INJECTED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:2:1-15:12
+INJECTED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:2:1-19:12
+INJECTED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:2:1-19:12
+INJECTED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:2:1-19:12
 	package
 		ADDED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:2:102-133
 		INJECTED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml
@@ -88,7 +88,19 @@ MERGED from [:CordovaLib] /Users/rubendomingues/Documents/GitHub/milk-the-cow/ap
 		ADDED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:13:42-71
 	android:minSdkVersion
 		ADDED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:13:15-41
-uses-permission#android.permission.VIBRATE
-ADDED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:14:5-66
+uses-permission#android.permission.ACCESS_COARSE_LOCATION
+ADDED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:14:5-81
 	android:name
-		ADDED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:14:22-63
+		ADDED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:14:22-78
+uses-permission#android.permission.BLUETOOTH
+ADDED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:15:5-68
+	android:name
+		ADDED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:15:22-65
+uses-permission#android.permission.BLUETOOTH_ADMIN
+ADDED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:16:5-74
+	android:name
+		ADDED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:16:22-71
+uses-permission#android.permission.VIBRATE
+ADDED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:17:5-66
+	android:name
+		ADDED from /Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/src/main/AndroidManifest.xml:17:22-63
