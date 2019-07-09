@@ -13,7 +13,14 @@
     "cordova-plugin-ble-peripheral": {
       "PACKAGE_NAME": "today.milkthecow.game"
     },
+    "cordova-plugin-bluetooth-peripheral-usage-description": {
+      "TEXT": "Used to communicate with your friends to play in multiplayer.",
+      "PACKAGE_NAME": "today.milkthecow.game"
+    },
     "cordova-plugin-device": {
+      "PACKAGE_NAME": "today.milkthecow.game"
+    },
+    "cordova-plugin-device-name": {
       "PACKAGE_NAME": "today.milkthecow.game"
     },
     "cordova-plugin-insomnia": {
@@ -23,9 +30,6 @@
       "PACKAGE_NAME": "today.milkthecow.game"
     },
     "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "today.milkthecow.game"
-    },
-    "cordova-plugin-device-name": {
       "PACKAGE_NAME": "today.milkthecow.game"
     }
   },

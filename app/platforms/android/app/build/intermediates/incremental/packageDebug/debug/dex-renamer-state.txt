@@ -1,4 +1,4 @@
-#Fri Jul 05 18:04:21 WEST 2019
+#Tue Jul 09 14:31:56 WEST 2019
 base.0=/Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/build/intermediates/transforms/dexMerger/debug/0
 renamed.0=classes.dex
 file.0=/Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/build/intermediates/transforms/dexMerger/debug/0/classes.dex

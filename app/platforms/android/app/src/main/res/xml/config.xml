@@ -9,15 +9,15 @@
     <feature name="Device">
         <param name="android-package" value="org.apache.cordova.device.Device" />
     </feature>
+    <feature name="DeviceName">
+        <param name="android-package" value="net.becvert.cordova.DeviceName" />
+    </feature>
     <feature name="Insomnia">
         <param name="android-package" value="nl.xservices.plugins.Insomnia" />
     </feature>
     <feature name="Whitelist">
         <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
         <param name="onload" value="true" />
-    </feature>
-    <feature name="DeviceName">
-        <param name="android-package" value="net.becvert.cordova.DeviceName" />
     </feature>
     <name>Milk the Cow</name>
     <description>

@@ -1,12 +1,22 @@
 Bluetooth = function () {
     const SERVICE_UUID = '23aa';
     const CHARACTERISTIC_SERVER_UUID = '11ff';
-    const END_STRING = '$';
+    const END_STRING = '#$%';
+    let connState = false;
+    let foundedDevices = [];
     let connectedDevice;
     let scanTimout = 0;
     let receiveTimeout = 0;
     let receiveBuff = '';
     let connectionFailureTries = 0;
+
+    const EVENTS = {
+        NEW_DEVICE: 'newdevice',
+        RECEIVED_REQUEST: 'receivedrequest',
+        CONNECTION_SUCCESS: 'connectionsuccess',
+        CONNECTION_FAILURE: 'connectionfailure',
+    };
+    this.EVENTS = EVENTS;
 
     /**
      * MISC
@@ -17,25 +27,28 @@ Bluetooth = function () {
             ble.isEnabled(
                 function () {
                     // bluetooth is enabled
-                    resolve();
+                    connState = true;
+                    resolve(this);
                 }, function () {
                     // Bluetooth not yet enabled so we try to enable it
                     console.log('Bluetooth not yet enabled so we try to enable it');
                     ble.enable(
                         function () {
                             // bluetooth now enabled
+                            connState = true;
                             resolve(this);
                         },
                         function (err) {
-                            alert('Cannot enable bluetooth');
-                            reject();
+                            connState = false;
+                            reject(err);
                         }
                     );
                 });
             if (offNotify) {
                 ble.startStateNotifications(
                     function (state) {
-                        if (state.toLowerCase() === 'off') {
+                        if (state.toLowerCase() === 'off' && connState === true) {
+                            connState = false;
                             offNotify();
                         }
                     }
@@ -45,7 +58,6 @@ Bluetooth = function () {
     }
 
     function onError(e) {
-        document.getElementById("devicesListInfo").innerHTML = 'ERROR: ' + e;
         console.warn(e);
     }
 
@@ -66,22 +78,26 @@ Bluetooth = function () {
     /**
      * CLIENT SIDE
      */
-    function scan() {
-        document.getElementById("devicesList").innerHTML = '';
-        document.getElementById("devicesListInfo").innerHTML = "Scanning...";
+    function scan(onEnd) {
         ble.stopScan();
+        foundedDevices = [];
         ble.scan([SERVICE_UUID], 10, onDiscoverDevice, onError);
         clearTimeout(scanTimout);
-        scanTimout = setTimeout(() => document.getElementById("devicesListInfo").innerHTML = "Scanning stopped!", 10000);
+        scanTimout = setTimeout(() => {
+            if (onEnd) onEnd();
+        }, 10000);
     }
+
 
     function onDiscoverDevice(device) {
         if (!device.name) {
             return;
         }
-        console.log(JSON.stringify(device));
-
-        const event = new CustomEvent('newdevice', {'detail': device});
+        if (foundedDevices.some(dev => dev.name === device.name)) {
+            return;
+        }
+        foundedDevices.push(device);
+        const event = new CustomEvent(EVENTS.NEW_DEVICE, {'detail': device});
         document.dispatchEvent(event);
     }
 
@@ -89,40 +105,46 @@ Bluetooth = function () {
     function bleConnectionRequest(dev_id) {
         clearTimeout(scanTimout);
         // Check if was previous connected device
-        if (ble.isConnected(connectedDevice)) {
+        ble.isConnected(connectedDevice, function () {
             disconnect(connectedDevice);
-        }
+        });
         // Check if you try to connect to same device
-        if (ble.isConnected(dev_id)) {
+        ble.isConnected(dev_id, function () {
             disconnect(dev_id);
-        }
-        document.getElementById("devicesListInfo").innerHTML = 'Connecting to ' + dev_id + '...';
+        });
         ble.connect(dev_id, bleConnectionSuccess, bleConnectionFailure);
     }
 
     function bleConnectionSuccess(device) {
         connectionFailureTries = 0;
-        document.getElementById("devicesList").innerHTML = '';
-        document.getElementById("devicesListInfo").innerHTML = "BLE Connected to " + device.name;
         connectedDevice = device.id;
-        sendData({type: 'newuser', data: 'User ' + window.device.name + ' (' + window.device.uuid + ') has joined'});
+        const event = new CustomEvent(EVENTS.CONNECTION_SUCCESS, {'detail': device});
+        document.dispatchEvent(event);
     }
 
     function bleConnectionFailure(device) {
         connectionFailureTries++;
         if (connectionFailureTries < 3) {
-            bleConnectionRequest(device);
+            setTimeout(() => {
+                ble.isConnected(connectedDevice, function () {
+                    connectionFailureTries = 0;
+                }, function () {
+                    bleConnectionRequest(device);
+                });
+            }, 300);
         } else {
-            document.getElementById("devicesListInfo").innerHTML = "Not Connected";
-            alert('Connection Failure');
-            scan();
+            const event = new CustomEvent(EVENTS.CONNECTION_FAILURE, {'detail': device});
+            document.dispatchEvent(event);
         }
     }
 
-    function sendData(data) {
-        if (!connectedDevice) {
+    function sendData(data, deviceId) {
+        if (!connectedDevice && !deviceId) {
             alert('No connected device');
             return false;
+        }
+        if (!connectedDevice && deviceId) {
+            connectedDevice = deviceId;
         }
         let _data;
         if (typeof data === 'object' && data !== null) {
@@ -136,16 +158,11 @@ Bluetooth = function () {
     function handlingData(string) {
         string = string.concat(END_STRING);
         const parts = string.match(/[\s\S]{1,20}/g) || [];
-        console.log('parts', parts);
-        let isProblem = false;
         for (let i = 0; i < parts.length; i++) {
             if (sendBytes(parts[i]) === false) {
-                isProblem = true;
+                return;
             }
         }
-        // if (!isProblem) {
-        //     document.getElementById("debug").innerHTML += '<br />Me:' + string.slice(0, string.length - 1);
-        // }
     }
 
     function sendBytes(data) {
@@ -155,13 +172,12 @@ Bluetooth = function () {
             CHARACTERISTIC_SERVER_UUID,
             stringToBytes(data),
             function (response) {
-                console.log(response);
                 if (response !== 'OK') {
+                    console.warn('Error sending data', response);
                     alert("Error occurred while trying to communicate. Please try again. ");
                     return false;
-                } else {
-                    return true;
                 }
+                return true;
             },
             function (err) {
                 console.warn('Writing error:', err);
@@ -186,17 +202,17 @@ Bluetooth = function () {
      * SERVER SIDE
      */
 
-    function onDeviceReady() {
+    function startServer() {
         blePeripheral.onWriteRequest(didReceiveWriteRequest);
         blePeripheral.onBluetoothStateChange(onBluetoothStateChange);
-        createServiceJSON();
+        return createServiceJSON();
     }
 
     function createServiceJSON() {
         const property = blePeripheral.properties;
         const permission = blePeripheral.permissions;
 
-        const gameService = {
+        const jsonService = {
             uuid: SERVICE_UUID,
             characteristics: [
                 {
@@ -213,15 +229,17 @@ Bluetooth = function () {
             ]
         };
 
-        Promise.all([
-            blePeripheral.createServiceFromJSON(gameService),
+        return Promise.all([
+            blePeripheral.createServiceFromJSON(jsonService),
             blePeripheral.startAdvertising(SERVICE_UUID, CHARACTERISTIC_SERVER_UUID),
         ]).then(
-            function () {
-                console.log('Created Game Service');
+            function (ok) {
+                console.log('Created Service', ok);
+                return true;
             },
             function (e) {
                 console.warn('Error: Server cannot be started!, ' + e);
+                return false;
             }
         );
     }
@@ -232,7 +250,7 @@ Bluetooth = function () {
             clearTimeout(receiveTimeout);
             const data = bytesToString(request.value);
             receiveBuff = receiveBuff.concat(data);
-            if (receiveBuff[receiveBuff.length - 1] === END_STRING) {
+            if (receiveBuff.slice(receiveBuff.length - END_STRING.length, receiveBuff.length) === END_STRING) {
                 const removeEndString = receiveBuff.replace(END_STRING, '');
                 let parsed;
                 try {
@@ -240,7 +258,7 @@ Bluetooth = function () {
                 } catch (e) {
                     parsed = removeEndString;
                 }
-                const event = new CustomEvent('receivedrequest', {'detail': parsed});
+                const event = new CustomEvent(EVENTS.RECEIVED_REQUEST, {'detail': parsed});
                 document.dispatchEvent(event);
                 receiveBuff = '';
             }
@@ -248,7 +266,7 @@ Bluetooth = function () {
         // If all receive data are not completed, I might has an error so restart buffer
         receiveTimeout = setTimeout(() => {
             if (receiveBuff !== '') {
-                console.warn('Error receiving data');
+                console.warn('Error receiving data', receiveBuff);
             }
             receiveBuff = '';
         }, 3000);
@@ -258,5 +276,10 @@ Bluetooth = function () {
         console.log('Bluetooth State is', state);
     }
 
-    this.startServer = onDeviceReady;
+    function stopServer(success, err) {
+        blePeripheral.stopAdvertising(success, err);
+    }
+
+    this.startServer = startServer;
+    this.stopServer = stopServer;
 }

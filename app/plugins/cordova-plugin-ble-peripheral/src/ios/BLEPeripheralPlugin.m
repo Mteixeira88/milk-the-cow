@@ -334,6 +334,10 @@ static NSDictionary *dataToArrayBuffer(NSData* data) {
     return nil; //Characteristic not found on this service
 }
 
+- (void)stopAdvertising:(CDVInvokedUrlCommand *)command {
+    [manager stopAdvertising];
+}
+
 // TODO need errors here to call error callback
 - (CBMutableService*) serviceFromJSON:(NSDictionary *)serviceDict {
 

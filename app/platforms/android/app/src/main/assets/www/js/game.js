@@ -8,12 +8,6 @@ Game = function () {
     let finalTime = 0;
     let shakes = 0;
 
-    /*let images = {
-        init: './assets/cow_init.gif',
-        shaking: './assets/cow_shake.gif',
-        end: './assets/cow_end.gif'
-    };*/
-
     let scoreElements = {
         highScoreElement: undefined,
         instantScore: undefined,

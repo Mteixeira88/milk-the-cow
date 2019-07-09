@@ -64,5 +64,15 @@
     },
     "is_top_level": true,
     "variables": {}
+  },
+  "cordova-plugin-bluetooth-peripheral-usage-description": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-bluetooth-peripheral-usage-description@^1.0.0"
+    },
+    "is_top_level": true,
+    "variables": {
+      "TEXT": "Used to communicate with your friends to play in multiplayer."
+    }
   }
 }

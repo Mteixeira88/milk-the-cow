@@ -25,19 +25,19 @@ module.exports = [
     ]
   },
   {
-    "id": "cordova-plugin-insomnia.Insomnia",
-    "file": "plugins/cordova-plugin-insomnia/www/Insomnia.js",
-    "pluginId": "cordova-plugin-insomnia",
-    "clobbers": [
-      "window.plugins.insomnia"
-    ]
-  },
-  {
     "id": "cordova-plugin-device-name.DeviceName",
     "file": "plugins/cordova-plugin-device-name/www/device-name.js",
     "pluginId": "cordova-plugin-device-name",
     "clobbers": [
       "cordova.plugins.deviceName"
+    ]
+  },
+  {
+    "id": "cordova-plugin-insomnia.Insomnia",
+    "file": "plugins/cordova-plugin-insomnia/www/Insomnia.js",
+    "pluginId": "cordova-plugin-insomnia",
+    "clobbers": [
+      "window.plugins.insomnia"
     ]
   }
 ];
@@ -46,11 +46,12 @@ module.exports.metadata =
 {
   "cordova-plugin-ble-central": "1.2.2",
   "cordova-plugin-ble-peripheral": "1.0.0",
+  "cordova-plugin-bluetooth-peripheral-usage-description": "1.0.0",
   "cordova-plugin-device": "2.0.3",
+  "cordova-plugin-device-name": "1.3.5",
   "cordova-plugin-insomnia": "4.3.0",
   "cordova-plugin-vibration": "3.1.0",
-  "cordova-plugin-whitelist": "1.3.3",
-  "cordova-plugin-device-name": "1.3.5"
+  "cordova-plugin-whitelist": "1.3.3"
 };
 // BOTTOM OF METADATA
 });

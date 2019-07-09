@@ -18,7 +18,7 @@ cordova.define("cordova-plugin-ble-peripheral.blePeripheral", function(require, 
 
 // Util functions for translating nested array buffers going across the Cordova bridge
 
-var stringToArrayBuffer = function(str) {
+var stringToArrayBuffer = function (str) {
     var ret = new Uint8Array(str.length);
     for (var i = 0; i < str.length; i++) {
         ret[i] = str.charCodeAt(i);
@@ -27,7 +27,7 @@ var stringToArrayBuffer = function(str) {
     return ret.buffer;
 };
 
-var base64ToArrayBuffer = function(b64) {
+var base64ToArrayBuffer = function (b64) {
     return stringToArrayBuffer(atob(b64));
 };
 
@@ -44,7 +44,7 @@ function convertToNativeJS(object) {
     Object.keys(object).forEach(function (key) {
         var value = object[key];
         object[key] = massageMessageNativeToJs(value);
-        if (typeof(value) === 'object') {
+        if (typeof (value) === 'object') {
             convertToNativeJS(value);
         }
     });
@@ -57,42 +57,44 @@ var onBluetoothStateChangeCallback;
 
 function registerWriteRequestCallback() {
 
-    var didReceiveWriteRequest = function(json) {
-      console.log('didReceiveWriteRequest');
-      console.log(json);
-      convertToNativeJS(json);
+    var didReceiveWriteRequest = function (json) {
+        console.log('didReceiveWriteRequest');
+        console.log(json);
+        convertToNativeJS(json);
 
-      if (onWriteRequestCallback && typeof onWriteRequestCallback === 'function') {
-        onWriteRequestCallback(json);
-      }
+        if (onWriteRequestCallback && typeof onWriteRequestCallback === 'function') {
+            onWriteRequestCallback(json);
+        }
     };
 
-    var failure = function() {
+    var failure = function () {
         // this should never happen
         console.log("Failed to add setCharacteristicValueChangedListener");
     };
 
     cordova.exec(didReceiveWriteRequest, failure, 'BLEPeripheral', 'setCharacteristicValueChangedListener', []);
 }
+
 registerWriteRequestCallback();
 
 function registerBluetoothStateChangeCallback() {
 
-    var bluetoothStateChanged = function(state) {
-      console.log('bluetoothStateChanged', state);
+    var bluetoothStateChanged = function (state) {
+        console.log('bluetoothStateChanged', state);
 
-      if (onBluetoothStateChangeCallback && typeof onBluetoothStateChangeCallback === 'function') {
-        onBluetoothStateChangeCallback(state);
-      }
+        if (onBluetoothStateChangeCallback && typeof onBluetoothStateChangeCallback === 'function') {
+            onBluetoothStateChangeCallback(state);
+        }
     };
 
-    var failure = function() {
+    var failure = function () {
         // this should never happen
         console.log("Failed to add bluetoothStateChangedListener");
     };
 
     cordova.exec(bluetoothStateChanged, failure, 'BLEPeripheral', 'setBluetoothStateChangedListener', []);
 }
+
 registerBluetoothStateChangeCallback();
 
 /* 
@@ -119,7 +121,7 @@ Maybe permissions should be optional and default to read/write based on the prop
 
 module.exports = {
 
-    properties : {
+    properties: {
         READ: 0x02,
         WRITE: 0x08,
         WRITE_NO_RESPONSE: 0x04,
@@ -131,61 +133,64 @@ module.exports = {
         READABLE: 0x01,
         WRITEABLE: cordova.platformId === 'ios' ? 0x02 : 0x10,
         READ_ENCRYPTION_REQUIRED: cordova.platformId === 'ios' ? 0x04 : 0x02,
-        WRITE_ENCRYPTION_REQUIRED: cordova.platformId === 'ios' ? 0x08: 0x20
+        WRITE_ENCRYPTION_REQUIRED: cordova.platformId === 'ios' ? 0x08 : 0x20
     },
 
-    createService: function(uuid) {
+    createService: function (uuid) {
 
-        return new Promise(function(resolve, reject) {
-             cordova.exec(resolve, reject, 'BLEPeripheral', 'createService', [uuid]);
+        return new Promise(function (resolve, reject) {
+            cordova.exec(resolve, reject, 'BLEPeripheral', 'createService', [uuid]);
         });
     },
 
-    createServiceFromJSON: function(json) {
+    createServiceFromJSON: function (json) {
 
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             cordova.exec(resolve, reject, 'BLEPeripheral', 'createServiceFromJSON', [json]);
         });
 
     },
 
-    addCharacteristic: function(service, characteristic, properties, permissions) {
+    addCharacteristic: function (service, characteristic, properties, permissions) {
 
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             cordova.exec(resolve, reject, 'BLEPeripheral', 'addCharacteristic', [service, characteristic, properties, permissions]);
         });
 
     },
 
-    addService: function(service) {
+    addService: function (service) {
 
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             cordova.exec(resolve, reject, 'BLEPeripheral', 'addService', [service]);
         });
 
     },
 
-    publishService: function(uuid) {
+    publishService: function (uuid) {
 
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             cordova.exec(resolve, reject, 'BLEPeripheral', 'publishService', [uuid]);
         });
 
     },
 
     // Future versions should should allow one or multiple services, name should be optional
-    startAdvertising: function(service, localName) {
+    startAdvertising: function (service, localName) {
 
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             cordova.exec(resolve, reject, 'BLEPeripheral', 'startAdvertising', [service, localName]);
         });
+    },
 
+    stopAdvertising: function (resolve, reject) {
+        cordova.exec(resolve, reject, "BLEPeripheral", "stopAdvertising");
     },
 
     // setting the value automatically notifies subscribers
-    setCharacteristicValue: function(service, characteristic, value) {
+    setCharacteristicValue: function (service, characteristic, value) {
 
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             if (value.constructor !== ArrayBuffer) {
                 // TODO try calling value.buffer before rejecting
                 reject('value must be an ArrayBuffer');
@@ -223,14 +228,13 @@ module.exports = {
     //   characteristic: '5678',
     //   value: someArrayBuffer
     // }
-    onWriteRequest: function(callback) {
+    onWriteRequest: function (callback) {
         onWriteRequestCallback = callback;
     },
 
-    onBluetoothStateChange: function(callback) {
+    onBluetoothStateChange: function (callback) {
         onBluetoothStateChangeCallback = callback;
     }
-
 };
 
 });

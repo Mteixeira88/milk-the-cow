@@ -1,0 +1,59 @@
+{
+  "_from": "cordova-plugin-bluetooth-peripheral-usage-description",
+  "_id": "cordova-plugin-bluetooth-peripheral-usage-description@1.0.0",
+  "_inBundle": false,
+  "_integrity": "sha1-lZFlAr0oZcGfE+qRlni8dC55pcU=",
+  "_location": "/cordova-plugin-bluetooth-peripheral-usage-description",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "cordova-plugin-bluetooth-peripheral-usage-description",
+    "name": "cordova-plugin-bluetooth-peripheral-usage-description",
+    "escapedName": "cordova-plugin-bluetooth-peripheral-usage-description",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-bluetooth-peripheral-usage-description/-/cordova-plugin-bluetooth-peripheral-usage-description-1.0.0.tgz",
+  "_shasum": "95916502bd2865c19f13ea919678bc742e79a5c5",
+  "_spec": "cordova-plugin-bluetooth-peripheral-usage-description",
+  "_where": "/Users/rubendomingues/Documents/GitHub/milk-the-cow/app",
+  "author": {
+    "name": "Rand Dusing"
+  },
+  "bugs": {
+    "url": "https://github.com/randdusing/cordova-plugin-bluetooth-peripheral-usage-description/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-plugin-bluetooth-peripheral-usage-description",
+    "platforms": [
+      "ios"
+    ]
+  },
+  "deprecated": false,
+  "description": "Set Bluetooth Peripheral Usage Description on iOS",
+  "homepage": "https://github.com/randdusing/cordova-plugin-bluetooth-peripheral-usage-description#readme",
+  "keywords": [
+    "bluetooth",
+    "bluetoothle",
+    "bluetooth le",
+    "background",
+    "peripheral",
+    "cordova",
+    "ecosystem:cordova",
+    "cordova-ios"
+  ],
+  "license": "MIT",
+  "name": "cordova-plugin-bluetooth-peripheral-usage-description",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/randdusing/cordova-plugin-bluetooth-peripheral-usage-description.git"
+  },
+  "version": "1.0.0"
+}
