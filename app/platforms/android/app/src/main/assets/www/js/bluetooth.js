@@ -152,7 +152,7 @@ Bluetooth = function () {
         } else {
             _data = data;
         }
-        handlingData(_data);
+        return handlingData(_data);
     }
 
     function handlingData(string) {
@@ -160,9 +160,10 @@ Bluetooth = function () {
         const parts = string.match(/[\s\S]{1,20}/g) || [];
         for (let i = 0; i < parts.length; i++) {
             if (sendBytes(parts[i]) === false) {
-                return;
+                return false;
             }
         }
+        return true;
     }
 
     function sendBytes(data) {

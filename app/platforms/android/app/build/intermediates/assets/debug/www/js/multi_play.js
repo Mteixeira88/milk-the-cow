@@ -1,11 +1,14 @@
 let bt;
 let connectedDevices = {me: undefined, other: undefined};
+let readyTimeout;
 
 const searchDevicesButton = document.getElementById('searchDevices');
 const playButton = document.getElementById('play');
 const deviceList = document.getElementById("devicesList");
 const deviceInfo = document.getElementById("devicesListInfo");
 const debug = document.getElementById('debug');
+const connectContainer = document.getElementById('connect');
+const gameContainer = document.getElementById('game');
 
 function joinGame() {
     searchDevicesButton.disabled = true;
@@ -25,12 +28,27 @@ function scan() {
 
 function onReceivedRequest(event) {
     const request = event.detail;
-    if (request.type === 'newuser') {
-        debug.innerHTML += '<br />User ' + request.data.name + ' has joined!';
-        connectedDevices.me = request.data;
-        checkPlay();
-    } else {
-        debug.innerHTML += '<br />' + JSON.stringify(request);
+    switch (request.type) {
+        // When someone connects
+        case 'connect':
+            connectedDevices.me = request.data;
+            checkPlay();
+            break;
+        // When someone touch play button
+        case 'play':
+            if (checkPlay()) {
+                bt.sendData({type: 'ready'});
+                playGame();
+            }
+            break;
+        // When both devices are ready
+        case 'ready':
+            clearTimeout(readyTimeout);
+            playGame();
+            break;
+        default:
+            debug.innerHTML += '<br />' + JSON.stringify(request);
+
     }
 }
 
@@ -52,10 +70,13 @@ function onConnectionSuccess(event) {
     const device = event.detail;
     deviceList.innerHTML = '';
     deviceInfo.innerHTML = "BLE Connected to " + device.name;
-    connectedDevices.other = device;
     searchDevicesButton.addEventListener('touchstart', joinGame);
     checkPlay();
-    bt.sendData({type: 'newuser', data: {name: window.device.name}});
+    if (bt.sendData({type: 'connect', data: {name: window.device.name}})) {
+        connectedDevices.other = device;
+    } else {
+        onConnectionFailure();
+    }
 }
 
 function onConnectionFailure(event) {
@@ -72,20 +93,34 @@ function checkPlay() {
         if (connectedDevices.me.name === connectedDevices.other.name) {
             playButton.style.display = 'block';
             playButton.addEventListener('click', onClickPlay);
+            return true;
         } else {
             alert('You need to connect do same friend');
             playButton.style.display = 'none';
             playButton.removeEventListener('click', onClickPlay);
+            return false;
         }
     } else {
         playButton.style.display = 'none';
         playButton.removeEventListener('click', onClickPlay);
+        return false;
     }
 }
 
 function onClickPlay() {
-    console.log(connectedDevices);
-    bt.sendData('Ready to Play!!');
+    if (bt.sendData({type: 'play'})) {
+        readyTimeout = setTimeout(() => {
+            alert('Your friend is not ready!');
+        }, 500);
+    } else {
+        onConnectionFailure();
+    }
+}
+
+function playGame() {
+    connectContainer.style.display = 'none';
+    gameContainer.style.display = 'flex';
+    new Game();
 }
 
 
