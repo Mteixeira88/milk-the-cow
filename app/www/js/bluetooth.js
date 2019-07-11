@@ -9,6 +9,7 @@ Bluetooth = function () {
     let scanTimout = 0;
     let receiveTimeout = 0;
     let receiveBuff = '';
+    const platform = cordova.platformId;
 
     const EVENTS = {
         NEW_DEVICE: 'newdevice',
@@ -24,11 +25,77 @@ Bluetooth = function () {
 
     function init(offNotify) {
         return new Promise((resolve, reject) => {
+            cordova.plugins.diagnostic.getLocationAuthorizationStatus(function (status) {
+                handleLocationAuthorizationStatus(status, offNotify).then(() => resolve()).catch(e => reject(e));
+            }, function (error) {
+                reject(error);
+                console.error("The following error occurred: " + error);
+            });
+        })
+    }
+
+    function handleLocationAuthorizationStatus(status, offNotify) {
+        return new Promise((resolve, reject) => {
+            switch (status) {
+                case cordova.plugins.diagnostic.permissionStatus.GRANTED:
+                    if (platform === "ios") {
+                        makeBluetoothRequest(offNotify).then(() => resolve()).catch((e) => reject(e));
+                    } else {
+                        makeLocationRequest(offNotify).then(() => resolve()).catch((e) => reject(e));
+                    }
+                    break;
+                case cordova.plugins.diagnostic.permissionStatus.NOT_REQUESTED:
+                    cordova.plugins.diagnostic.requestLocationAuthorization((status) =>
+                            handleLocationAuthorizationStatus(status, offNotify).then(() => resolve())
+                                .catch(e => reject(e))
+                        , e => reject(e));
+                    break;
+                case cordova.plugins.diagnostic.permissionStatus.DENIED:
+                    if (platform === "android") {
+                        reject("User denied permission to use location");
+                    } else {
+                        makeLocationRequest(offNotify).then(() => resolve()).catch((e) => reject(e));
+                    }
+                    break;
+                case cordova.plugins.diagnostic.permissionStatus.DENIED_ALWAYS:
+                    // Android only
+                    reject("User denied permission to use location");
+                    break;
+                case cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE:
+                    // iOS only
+                    reject("Location services is already switched ON");
+                    break;
+            }
+        });
+    }
+
+    function makeLocationRequest(offNotify) {
+        return new Promise((resolve, reject) => {
+            cordova.plugins.locationAccuracy.canRequest(function (canRequest) {
+                if (canRequest) {
+                    cordova.plugins.locationAccuracy.request(function () {
+                            makeBluetoothRequest(offNotify).then(() => resolve()).catch((e) => reject(e));
+                        }, function (error) {
+                            reject(error);
+                        }, cordova.plugins.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY // iOS will ignore this
+                    );
+                } else {
+                    // On iOS, this will occur if Location Services is currently on OR a request is currently in progress.
+                    // On Android, this will occur if the app doesn't have authorization to use location.
+                    reject("Cannot request location accuracy");
+                }
+            });
+        });
+    }
+
+
+    function makeBluetoothRequest(offNotify) {
+        return new Promise((resolve, reject) => {
             ble.isEnabled(
                 function () {
                     // bluetooth is enabled
                     connState = true;
-                    resolve(this);
+                    resolve();
                 }, function () {
                     // Bluetooth not yet enabled so we try to enable it
                     console.log('Bluetooth not yet enabled so we try to enable it');
@@ -36,7 +103,7 @@ Bluetooth = function () {
                         function () {
                             // bluetooth now enabled
                             connState = true;
-                            resolve(this);
+                            resolve();
                         },
                         function (err) {
                             connState = false;
@@ -54,7 +121,7 @@ Bluetooth = function () {
                     }
                 );
             }
-        })
+        });
     }
 
     function onError(e) {
@@ -129,7 +196,7 @@ Bluetooth = function () {
                 ble.isConnected(connectedDevice, function () {
                     connectionFailureTries = 0;
                 }, function () {
-                    bleConnectionRequest(device);
+                    setTimeout(() => bleConnectionRequest(device), 300);
                 });
             }, 300);
         } else {
@@ -138,7 +205,7 @@ Bluetooth = function () {
         }
     }
 
-    function sendData(data, deviceId) {
+    async function sendData(data, deviceId) {
         if (!connectedDevice && !deviceId) {
             alert('No connected device');
             return false;
@@ -146,24 +213,36 @@ Bluetooth = function () {
         if (!connectedDevice && deviceId) {
             connectedDevice = deviceId;
         }
-        let _data;
-        if (typeof data === 'object' && data !== null) {
-            _data = JSON.stringify(data);
-        } else {
-            _data = data;
-        }
-        return handlingData(_data);
+        await ble.isConnected(
+            connectedDevice,
+            function (resp) {
+                console.log(resp);
+                let _data;
+                if (typeof data === 'object' && data !== null) {
+                    _data = JSON.stringify(data);
+                } else {
+                    _data = data;
+                }
+                return handlingData(_data);
+            },
+            function (e) {
+                console.warn('Error sending data to device ' + deviceId, e);
+                return false;
+            }
+        );
     }
 
     function handlingData(string) {
+        let hasError = false;
         string = string.concat(END_STRING);
         const parts = string.match(/[\s\S]{1,20}/g) || [];
         for (let i = 0; i < parts.length; i++) {
             if (sendBytes(parts[i]) === false) {
-                return false;
+                hasError = true;
+                return;
             }
         }
-        return true;
+        return !hasError;
     }
 
     function sendBytes(data) {
@@ -204,45 +283,49 @@ Bluetooth = function () {
      */
 
     function startServer() {
-        blePeripheral.onWriteRequest(didReceiveWriteRequest);
-        blePeripheral.onBluetoothStateChange(onBluetoothStateChange);
-        return createServiceJSON();
+        stopServer();
+        return new Promise((resolve, reject) => {
+            blePeripheral.onWriteRequest(didReceiveWriteRequest);
+            blePeripheral.onBluetoothStateChange(onBluetoothStateChange);
+            createServiceJSON().then(() => resolve()).catch(e => reject(e));
+        });
     }
 
     function createServiceJSON() {
-        const property = blePeripheral.properties;
-        const permission = blePeripheral.permissions;
+        return new Promise((resolve, reject) => {
+            const property = blePeripheral.properties;
+            const permission = blePeripheral.permissions;
 
-        const jsonService = {
-            uuid: SERVICE_UUID,
-            characteristics: [
-                {
-                    uuid: CHARACTERISTIC_SERVER_UUID,
-                    properties: property.WRITE | property.READ | property.WRITE_NO_RESPONSE | property.NOTIFY,
-                    permissions: permission.WRITEABLE | permission.READABLE,
-                    descriptors: [
-                        {
-                            uuid: '9388',
-                            value: 'MilkTheCowToday'
-                        }
-                    ]
+            const jsonService = {
+                uuid: SERVICE_UUID,
+                characteristics: [
+                    {
+                        uuid: CHARACTERISTIC_SERVER_UUID,
+                        properties: property.WRITE | property.READ | property.WRITE_NO_RESPONSE | property.NOTIFY,
+                        permissions: permission.WRITEABLE | permission.READABLE,
+                        descriptors: [
+                            {
+                                uuid: '9388',
+                                value: 'MilkTheCowToday'
+                            }
+                        ]
+                    },
+                ]
+            };
+
+            return Promise.all([
+                blePeripheral.createServiceFromJSON(jsonService),
+                blePeripheral.startAdvertising(SERVICE_UUID, CHARACTERISTIC_SERVER_UUID),
+            ]).then(
+                function (ok) {
+                    resolve();
                 },
-            ]
-        };
-
-        return Promise.all([
-            blePeripheral.createServiceFromJSON(jsonService),
-            blePeripheral.startAdvertising(SERVICE_UUID, CHARACTERISTIC_SERVER_UUID),
-        ]).then(
-            function (ok) {
-                console.log('Created Service', ok);
-                return true;
-            },
-            function (e) {
-                console.warn('Error: Server cannot be started!, ' + e);
-                return false;
-            }
-        );
+                function (e) {
+                    console.warn('Error: Server cannot be started!, ' + e);
+                    reject('Error: Server cannot be started!, ' + e);
+                }
+            );
+        });
     }
 
     function didReceiveWriteRequest(request) {

@@ -16,6 +16,12 @@
       "cordova-plugin-device-name": {},
       "cordova-plugin-bluetooth-peripheral-usage-description": {
         "TEXT": "Used to communicate with your friends to play in multiplayer."
+      },
+      "cordova-plugin-request-location-accuracy": {
+        "PLAY_SERVICES_LOCATION_VERSION": "16.+"
+      },
+      "cordova.plugins.diagnostic": {
+        "ANDROID_SUPPORT_VERSION": "27.+"
       }
     },
     "platforms": [
@@ -33,8 +39,10 @@
     "cordova-plugin-device": "^2.0.3",
     "cordova-plugin-device-name": "^1.3.5",
     "cordova-plugin-insomnia": "git+https://github.com/EddyVerbruggen/Insomnia-PhoneGap-Plugin.git",
+    "cordova-plugin-request-location-accuracy": "^2.3.0",
     "cordova-plugin-vibration": "^3.1.0",
     "cordova-plugin-whitelist": "1",
+    "cordova.plugins.diagnostic": "^5.0.0",
     "gradle": "^1.0.9"
   }
 }

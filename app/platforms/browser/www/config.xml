@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="today.milkthecow.game" version="1.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="today.milkthecow.game" version="1.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Milk the Cow</name>
     <description>
         A pleasure game to get milk from the cow.
     </description>
-    <author email="mteixeira88013@gmail.com">'Miguel Teixeira</author>
+    <author email="mteixeira88013@gmail.com">Miguel Teixeira</author>
     <content src="index.html" />
     <icon src="logo.png" />
     <access origin="*" />
@@ -16,4 +16,5 @@
     <allow-intent href="geo:*" />
     <preference name="Orientation" value="portrait" />
     <preference name="Fullscreen" value="true" />
+    <preference name="cordova.plugins.diagnostic.modules" value="LOCATION BLUETOOTH" />
 </widget>

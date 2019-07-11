@@ -12,12 +12,25 @@
 </head>
 
 <body>
-<!--<button id="createGame" style="padding: 16px">Create Game</button>-->
-<button id="searchDevices" style="padding: 16px">Search</button>
-<div id="devicesList"></div>
-<span id="devicesListInfo"></span>
-<div id="debug" style="margin-top: 100px;padding: 16px; background-color: #2a2a2a; color: #e0e0e0"></div>
-<button id="play" style="padding: 16px;">Play</button>
+<div id="connect">
+    <button id="searchDevices" style="padding: 16px">Search</button>
+    <div id="devicesList"></div>
+    <span id="devicesListInfo"></span>
+    <div id="debug" style="margin-top: 100px;padding: 16px; background-color: #2a2a2a; color: #e0e0e0"></div>
+    <button id="play" style="padding: 16px;">Play</button>
+</div>
+<div id="game" class="game">
+    <div class="background-image">
+        <img id="image-init" src="assets/cow_init.gif" alt="">
+        <img id="image-end" class="hidden" src="assets/cow_end.gif" alt="">
+    </div>
+    <div class="info">
+        <button id="buttonRestart" class="button">Start</button>
+        <div class="score">
+            <p id="instantScore">Touch Start to play!</p>
+        </div>
+    </div>
+</div>
 
 </body>
 <script type="text/javascript" src="cordova.js"></script>

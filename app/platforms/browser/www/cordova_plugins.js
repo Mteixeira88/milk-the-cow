@@ -82,7 +82,9 @@ module.exports.metadata =
     "cordova-plugin-ble-peripheral": "1.0.0",
     "cordova-plugin-device": "2.0.3",
     "cordova-plugin-device-name": "1.3.5",
-    "cordova-plugin-bluetooth-peripheral-usage-description": "1.0.0"
+    "cordova-plugin-bluetooth-peripheral-usage-description": "1.0.0",
+    "cordova-plugin-request-location-accuracy": "2.3.0",
+    "cordova.plugins.diagnostic": "5.0.0"
 }
 // BOTTOM OF METADATA
 });

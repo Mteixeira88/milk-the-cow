@@ -31,6 +31,12 @@
     "cordova-plugin-bluetooth-peripheral-usage-description": {
       "TEXT": "Used to communicate with your friends to play in multiplayer.",
       "PACKAGE_NAME": "today.milkthecow.game"
+    },
+    "cordova-plugin-request-location-accuracy": {
+      "PACKAGE_NAME": "today.milkthecow.game"
+    },
+    "cordova.plugins.diagnostic": {
+      "PACKAGE_NAME": "today.milkthecow.game"
     }
   },
   "dependent_plugins": {

@@ -5,10 +5,11 @@ Bluetooth = function () {
     let connState = false;
     let foundedDevices = [];
     let connectedDevice;
+    let connectionFailureTries = 0;
     let scanTimout = 0;
     let receiveTimeout = 0;
     let receiveBuff = '';
-    let connectionFailureTries = 0;
+    const platform = cordova.platformId;
 
     const EVENTS = {
         NEW_DEVICE: 'newdevice',
@@ -24,11 +25,77 @@ Bluetooth = function () {
 
     function init(offNotify) {
         return new Promise((resolve, reject) => {
+            cordova.plugins.diagnostic.getLocationAuthorizationStatus(function (status) {
+                handleLocationAuthorizationStatus(status, offNotify).then(() => resolve()).catch(e => reject(e));
+            }, function (error) {
+                reject(error);
+                console.error("The following error occurred: " + error);
+            });
+        })
+    }
+
+    function handleLocationAuthorizationStatus(status, offNotify) {
+        return new Promise((resolve, reject) => {
+            switch (status) {
+                case cordova.plugins.diagnostic.permissionStatus.GRANTED:
+                    if (platform === "ios") {
+                        makeBluetoothRequest(offNotify).then(() => resolve()).catch((e) => reject(e));
+                    } else {
+                        makeLocationRequest(offNotify).then(() => resolve()).catch((e) => reject(e));
+                    }
+                    break;
+                case cordova.plugins.diagnostic.permissionStatus.NOT_REQUESTED:
+                    cordova.plugins.diagnostic.requestLocationAuthorization((status) =>
+                            handleLocationAuthorizationStatus(status, offNotify).then(() => resolve())
+                                .catch(e => reject(e))
+                        , e => reject(e));
+                    break;
+                case cordova.plugins.diagnostic.permissionStatus.DENIED:
+                    if (platform === "android") {
+                        reject("User denied permission to use location");
+                    } else {
+                        makeLocationRequest(offNotify).then(() => resolve()).catch((e) => reject(e));
+                    }
+                    break;
+                case cordova.plugins.diagnostic.permissionStatus.DENIED_ALWAYS:
+                    // Android only
+                    reject("User denied permission to use location");
+                    break;
+                case cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE:
+                    // iOS only
+                    reject("Location services is already switched ON");
+                    break;
+            }
+        });
+    }
+
+    function makeLocationRequest(offNotify) {
+        return new Promise((resolve, reject) => {
+            cordova.plugins.locationAccuracy.canRequest(function (canRequest) {
+                if (canRequest) {
+                    cordova.plugins.locationAccuracy.request(function () {
+                            makeBluetoothRequest(offNotify).then(() => resolve()).catch((e) => reject(e));
+                        }, function (error) {
+                            reject(error);
+                        }, cordova.plugins.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY // iOS will ignore this
+                    );
+                } else {
+                    // On iOS, this will occur if Location Services is currently on OR a request is currently in progress.
+                    // On Android, this will occur if the app doesn't have authorization to use location.
+                    reject("Cannot request location accuracy");
+                }
+            });
+        });
+    }
+
+
+    function makeBluetoothRequest(offNotify) {
+        return new Promise((resolve, reject) => {
             ble.isEnabled(
                 function () {
                     // bluetooth is enabled
                     connState = true;
-                    resolve(this);
+                    resolve();
                 }, function () {
                     // Bluetooth not yet enabled so we try to enable it
                     console.log('Bluetooth not yet enabled so we try to enable it');
@@ -36,7 +103,7 @@ Bluetooth = function () {
                         function () {
                             // bluetooth now enabled
                             connState = true;
-                            resolve(this);
+                            resolve();
                         },
                         function (err) {
                             connState = false;
@@ -54,7 +121,7 @@ Bluetooth = function () {
                     }
                 );
             }
-        })
+        });
     }
 
     function onError(e) {
@@ -152,7 +219,7 @@ Bluetooth = function () {
         } else {
             _data = data;
         }
-        handlingData(_data);
+        return handlingData(_data);
     }
 
     function handlingData(string) {
@@ -160,9 +227,10 @@ Bluetooth = function () {
         const parts = string.match(/[\s\S]{1,20}/g) || [];
         for (let i = 0; i < parts.length; i++) {
             if (sendBytes(parts[i]) === false) {
-                return;
+                return false;
             }
         }
+        return true;
     }
 
     function sendBytes(data) {

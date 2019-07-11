@@ -5,7 +5,7 @@
   "short_name": "Milk the Cow",
   "version": "today.milkthecow.game",
   "description": "A pleasure game to get milk from the cow.",
-  "author": "'Miguel Teixeira",
+  "author": "Miguel Teixeira",
   "icons": [
     {
       "src": "logo.png",

@@ -26,10 +26,18 @@
     "cordova-plugin-insomnia": {
       "PACKAGE_NAME": "today.milkthecow.game"
     },
+    "cordova-plugin-request-location-accuracy": {
+      "PLAY_SERVICES_LOCATION_VERSION": "16.+",
+      "PACKAGE_NAME": "today.milkthecow.game"
+    },
     "cordova-plugin-vibration": {
       "PACKAGE_NAME": "today.milkthecow.game"
     },
     "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "today.milkthecow.game"
+    },
+    "cordova.plugins.diagnostic": {
+      "ANDROID_SUPPORT_VERSION": "27.+",
       "PACKAGE_NAME": "today.milkthecow.game"
     }
   },
