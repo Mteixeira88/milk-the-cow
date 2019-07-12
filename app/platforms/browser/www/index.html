@@ -16,14 +16,20 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
-    <!--<link rel="stylesheet" type="text/css" href="./css/index.css">-->
+    <link rel="stylesheet" type="text/css" href="./css/main.css">
+    <link rel="stylesheet" type="text/css" href="./css/index.css">
     <title>Milk the cow</title>
 </head>
 
 <body>
-<div>
-    <button id="singlePlay" style="padding: 16px">Single Play</button>
-    <button id="multiPlay" style="padding: 16px">Multiplay</button>
+<div id="game" class="game">
+    <h1 class="title">MILK THE COW</h1>
+    <p class="paragraph">Choose an option and start <strong>SHAKING!</strong></p>
+    <div class="background-image">
+        <img id="image-init" src="assets/cow_init.gif" alt="">
+    </div>
+        <button id="singlePlay" class="button">Single Play</button>
+        <button id="multiPlay" class="button">Multiplayer</button>
 </div>
 </body>
 <script type="text/javascript" src="cordova.js"></script>

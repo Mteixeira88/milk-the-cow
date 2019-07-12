@@ -7,19 +7,21 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+    <link rel="stylesheet" type="text/css" href="./css/main.css">
     <link rel="stylesheet" type="text/css" href="./css/multi_play.css">
     <title>Milk the cow</title>
 </head>
 
 <body>
 <div id="connect">
-    <button id="searchDevices" style="padding: 16px">Search</button>
+    <a href="/index.html" class="link">Go back</a>
+    <button id="searchDevices" class="button">Search</button>
     <div id="devicesList"></div>
     <span id="devicesListInfo"></span>
-    <div id="debug" style="margin-top: 100px;padding: 16px; background-color: #2a2a2a; color: #e0e0e0"></div>
     <button id="play" style="padding: 16px;">Play</button>
 </div>
 <div id="game" class="game">
+    <a href="/index.html" class="link">Go back</a>
     <div class="background-image">
         <img id="image-init" src="assets/cow_init.gif" alt="">
         <img id="image-end" class="hidden" src="assets/cow_end.gif" alt="">
@@ -27,11 +29,13 @@
     <div class="info">
         <button id="buttonRestart" class="button">Start</button>
         <div class="score">
-            <p id="instantScore">Touch Start to play!</p>
+            <p id="instantScore">Shake your phone!</p>
         </div>
     </div>
 </div>
-
+<div id="finished">
+    <div id="board"></div>
+</div>
 </body>
 <script type="text/javascript" src="cordova.js"></script>
 <script type="text/javascript" src="./js/shake.js"></script>

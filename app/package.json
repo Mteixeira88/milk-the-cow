@@ -30,7 +30,7 @@
     ]
   },
   "dependencies": {
-    "cordova-android": "^7.0.0",
+    "cordova-android": "^8.0.0",
     "cordova-browser": "^5.0.4",
     "cordova-plugin-ble-central": "^1.2.2",
     "cordova-plugin-ble-peripheral": "^1.0.0",

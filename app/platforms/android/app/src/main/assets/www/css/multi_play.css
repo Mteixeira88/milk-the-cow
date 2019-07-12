@@ -1,0 +1,18 @@
+#play {
+    display: none;
+}
+
+#connect {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+}
+
+#finished {
+    display: none;
+}
+
+#game {
+    display: none;
+}

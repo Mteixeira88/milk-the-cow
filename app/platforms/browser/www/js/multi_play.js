@@ -1,4 +1,5 @@
 let bt;
+let game;
 let connectedDevices = {me: undefined, other: undefined};
 let readyTimeout;
 
@@ -9,15 +10,17 @@ const deviceInfo = document.getElementById("devicesListInfo");
 const debug = document.getElementById('debug');
 const connectContainer = document.getElementById('connect');
 const gameContainer = document.getElementById('game');
+const finishedContainer = document.getElementById('finished');
+const board = document.getElementById('board');
 
 function joinGame() {
-    searchDevicesButton.disabled = true;
-    deviceList.innerHTML = '';
-    deviceInfo.innerHTML = "Scanning...";
     scan();
 }
 
 function scan() {
+    searchDevicesButton.disabled = true;
+    deviceList.innerHTML = '';
+    deviceInfo.innerHTML = "Scanning...";
     searchDevicesButton.removeEventListener('touchstart', joinGame);
     bt.scan(function () {
         deviceInfo.innerHTML = "Scanning stopped!";
@@ -45,6 +48,9 @@ function onReceivedRequest(event) {
         case 'ready':
             clearTimeout(readyTimeout);
             playGame();
+            break;
+        case 'endgame':
+            endGame(request.data);
             break;
         default:
             debug.innerHTML += '<br />' + JSON.stringify(request);
@@ -75,7 +81,7 @@ function onConnectionSuccess(event) {
     if (bt.sendData({type: 'connect', data: {name: window.device.name}})) {
         connectedDevices.other = device;
     } else {
-        onConnectionFailure();
+        onConnectionFailure(event);
     }
 }
 
@@ -84,7 +90,11 @@ function onConnectionFailure(event) {
     connectedDevices.other = undefined;
     checkPlay();
     deviceList.innerHTML = "Not Connected";
-    alert('Connection Failure to ' + device.name);
+    if (device) {
+        alert('Connection Failure to ' + device.name);
+    } else {
+        alert('Connection Failure');
+    }
     scan();
 }
 
@@ -110,6 +120,8 @@ function checkPlay() {
 function onClickPlay() {
     if (bt.sendData({type: 'play'})) {
         readyTimeout = setTimeout(() => {
+            connectedDevices.other = undefined;
+            scan();
             alert('Your friend is not ready!');
         }, 500);
     } else {
@@ -120,7 +132,39 @@ function onClickPlay() {
 function playGame() {
     connectContainer.style.display = 'none';
     gameContainer.style.display = 'flex';
-    new Game();
+    game = new Game();
+    document.addEventListener(game.EVENTS.FINISHED_GAME, onGameEnd);
+    game.start();
+}
+
+function endGame(result) {
+    connectedDevices.other.result = result;
+    checkResults();
+}
+
+function onGameEnd(event) {
+    document.removeEventListener(game.EVENTS.FINISHED_GAME, onGameEnd);
+    connectContainer.style.display = 'none';
+    gameContainer.style.display = 'none';
+    finishedContainer.style.display = 'block';
+    const result = event.detail;
+    bt.sendData({type: 'endgame', data: result});
+    connectedDevices.me.result = result;
+    checkResults();
+}
+
+function checkResults() {
+    if (connectedDevices.other.result) {
+        if (connectedDevices.other.result.shakes < connectedDevices.me.result.shakes) {
+            board.innerHTML = 'You win with ' + connectedDevices.me.result.shakes + ' shakes! :) <br />' +
+                'Other play do ' + connectedDevices.other.result.shakes + ' shakes! Bhuuu';
+        } else {
+            board.innerHTML = 'You LOSE with ' + connectedDevices.me.result.shakes + ' shakes! ;( <br />' +
+                'Other play with with ' + connectedDevices.other.result.shakes + ' shakes!';
+        }
+    } else {
+        board.innerHTML = 'You finished with ' + connectedDevices.me.result.shakes + ' shakes! <br />Waiting for other player...';
+    }
 }
 
 
@@ -148,12 +192,13 @@ document.addEventListener('deviceready', function () {
         window.location.href = 'index.html';
     }).then(() => {
         eventListener();
-        if (!bt.startServer()) {
+        bt.startServer().then(() => {
+            joinGame();
+            window.plugins.insomnia.keepAwake();
+        }).catch(e => {
             onBackEvent();
-            throw new Error('Can start Server!');
-        }
-        joinGame();
-        window.plugins.insomnia.keepAwake();
+            alert('Can start Server!' + e);
+        });
     }).catch(e => {
         console.warn('Error init Bluetooth', e);
         alert('You need bluetooth and location permission allowed to play with your friends! Please allow them and try again. ' + e);

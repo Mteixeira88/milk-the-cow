@@ -196,7 +196,7 @@ Bluetooth = function () {
                 ble.isConnected(connectedDevice, function () {
                     connectionFailureTries = 0;
                 }, function () {
-                    bleConnectionRequest(device);
+                    setTimeout(() => bleConnectionRequest(device), 300);
                 });
             }, 300);
         } else {
@@ -205,7 +205,7 @@ Bluetooth = function () {
         }
     }
 
-    function sendData(data, deviceId) {
+    async function sendData(data, deviceId) {
         if (!connectedDevice && !deviceId) {
             alert('No connected device');
             return false;
@@ -213,24 +213,36 @@ Bluetooth = function () {
         if (!connectedDevice && deviceId) {
             connectedDevice = deviceId;
         }
-        let _data;
-        if (typeof data === 'object' && data !== null) {
-            _data = JSON.stringify(data);
-        } else {
-            _data = data;
-        }
-        return handlingData(_data);
+        await ble.isConnected(
+            connectedDevice,
+            function (resp) {
+                console.log(resp);
+                let _data;
+                if (typeof data === 'object' && data !== null) {
+                    _data = JSON.stringify(data);
+                } else {
+                    _data = data;
+                }
+                return handlingData(_data);
+            },
+            function (e) {
+                console.warn('Error sending data to device ' + deviceId, e);
+                return false;
+            }
+        );
     }
 
     function handlingData(string) {
+        let hasError = false;
         string = string.concat(END_STRING);
         const parts = string.match(/[\s\S]{1,20}/g) || [];
         for (let i = 0; i < parts.length; i++) {
             if (sendBytes(parts[i]) === false) {
-                return false;
+                hasError = true;
+                return;
             }
         }
-        return true;
+        return !hasError;
     }
 
     function sendBytes(data) {
@@ -271,45 +283,49 @@ Bluetooth = function () {
      */
 
     function startServer() {
-        blePeripheral.onWriteRequest(didReceiveWriteRequest);
-        blePeripheral.onBluetoothStateChange(onBluetoothStateChange);
-        return createServiceJSON();
+        stopServer();
+        return new Promise((resolve, reject) => {
+            blePeripheral.onWriteRequest(didReceiveWriteRequest);
+            blePeripheral.onBluetoothStateChange(onBluetoothStateChange);
+            createServiceJSON().then(() => resolve()).catch(e => reject(e));
+        });
     }
 
     function createServiceJSON() {
-        const property = blePeripheral.properties;
-        const permission = blePeripheral.permissions;
+        return new Promise((resolve, reject) => {
+            const property = blePeripheral.properties;
+            const permission = blePeripheral.permissions;
 
-        const jsonService = {
-            uuid: SERVICE_UUID,
-            characteristics: [
-                {
-                    uuid: CHARACTERISTIC_SERVER_UUID,
-                    properties: property.WRITE | property.READ | property.WRITE_NO_RESPONSE | property.NOTIFY,
-                    permissions: permission.WRITEABLE | permission.READABLE,
-                    descriptors: [
-                        {
-                            uuid: '9388',
-                            value: 'MilkTheCowToday'
-                        }
-                    ]
+            const jsonService = {
+                uuid: SERVICE_UUID,
+                characteristics: [
+                    {
+                        uuid: CHARACTERISTIC_SERVER_UUID,
+                        properties: property.WRITE | property.READ | property.WRITE_NO_RESPONSE | property.NOTIFY,
+                        permissions: permission.WRITEABLE | permission.READABLE,
+                        descriptors: [
+                            {
+                                uuid: '9388',
+                                value: 'MilkTheCowToday'
+                            }
+                        ]
+                    },
+                ]
+            };
+
+            return Promise.all([
+                blePeripheral.createServiceFromJSON(jsonService),
+                blePeripheral.startAdvertising(SERVICE_UUID, CHARACTERISTIC_SERVER_UUID),
+            ]).then(
+                function (ok) {
+                    resolve();
                 },
-            ]
-        };
-
-        return Promise.all([
-            blePeripheral.createServiceFromJSON(jsonService),
-            blePeripheral.startAdvertising(SERVICE_UUID, CHARACTERISTIC_SERVER_UUID),
-        ]).then(
-            function (ok) {
-                console.log('Created Service', ok);
-                return true;
-            },
-            function (e) {
-                console.warn('Error: Server cannot be started!, ' + e);
-                return false;
-            }
-        );
+                function (e) {
+                    console.warn('Error: Server cannot be started!, ' + e);
+                    reject('Error: Server cannot be started!, ' + e);
+                }
+            );
+        });
     }
 
     function didReceiveWriteRequest(request) {
