@@ -171,6 +171,7 @@ Bluetooth = function () {
 
     function bleConnectionRequest(dev_id) {
         clearTimeout(scanTimout);
+        window.ble.stopScan();
         // Check if was previous connected device
         window.ble.isConnected(connectedDevice, function () {
             disconnect(connectedDevice);
@@ -189,14 +190,17 @@ Bluetooth = function () {
         document.dispatchEvent(event);
     }
 
+    let timoutConnectFail;
+
     function bleConnectionFailure(device) {
         connectionFailureTries++;
         if (connectionFailureTries < 3) {
-            setTimeout(() => {
+            clearTimeout(timoutConnectFail);
+            timoutConnectFail = setTimeout(() => {
                 window.ble.isConnected(connectedDevice, function () {
                     connectionFailureTries = 0;
                 }, function () {
-                    setTimeout(() => bleConnectionRequest(device), 300);
+                    bleConnectionRequest(device);
                 });
             }, 300);
         } else {

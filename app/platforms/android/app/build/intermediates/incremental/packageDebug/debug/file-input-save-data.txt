@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Fri Jul 12 15:51:42 WEST 2019
+#Fri Jul 12 16:07:47 WEST 2019
 20.base=/Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/build/intermediates/res/debug/resources-debug.ap_
 143.base=/Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/build/intermediates/assets/debug
 493.base=/Users/rubendomingues/Documents/GitHub/milk-the-cow/app/platforms/android/app/build/intermediates/res/debug/resources-debug.ap_

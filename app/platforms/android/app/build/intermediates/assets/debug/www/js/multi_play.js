@@ -69,6 +69,7 @@ function onNewDevice(event) {
 }
 
 function connectTo(device_id) {
+    deviceList.innerHTML = '';
     deviceInfo.innerHTML = 'Connecting to ' + device_id + '...';
     bt.connect(device_id);
 }
