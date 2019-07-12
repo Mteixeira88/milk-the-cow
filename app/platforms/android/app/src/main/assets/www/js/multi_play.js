@@ -18,6 +18,7 @@ function joinGame() {
 }
 
 function scan() {
+    searchDevicesButton.style.display = 'block';
     searchDevicesButton.disabled = true;
     deviceList.innerHTML = '';
     deviceInfo.innerHTML = "Scanning...";
@@ -63,7 +64,7 @@ function onNewDevice(event) {
     const listItem = document.createElement('p');
     listItem.addEventListener('touchstart', () => connectTo(device.id));
     listItem.style.padding = '8px';
-    listItem.innerHTML = '' + (device.name ? device.name : 'UNKNOWN') + ' - ' + device.id + ' (' + device.rssi + ')';
+    listItem.innerHTML = '' + device.name + ' - ' + device.id + ' (' + device.rssi + ')';
     deviceList.appendChild(listItem);
 }
 
@@ -74,6 +75,8 @@ function connectTo(device_id) {
 
 function onConnectionSuccess(event) {
     const device = event.detail;
+
+    searchDevicesButton.style.display = 'none';
     deviceList.innerHTML = '';
     deviceInfo.innerHTML = "BLE Connected to " + device.name;
     searchDevicesButton.addEventListener('touchstart', joinGame);
@@ -87,6 +90,7 @@ function onConnectionSuccess(event) {
 
 function onConnectionFailure(event) {
     const device = event.detail;
+    console.log('device', device);
     connectedDevices.other = undefined;
     checkPlay();
     deviceList.innerHTML = "Not Connected";
@@ -202,6 +206,7 @@ document.addEventListener('deviceready', function () {
     }).catch(e => {
         console.warn('Error init Bluetooth', e);
         alert('You need bluetooth and location permission allowed to play with your friends! Please allow them and try again. ' + e);
+        bt.stopServer();
         window.location.href = 'index.html';
     });
 });

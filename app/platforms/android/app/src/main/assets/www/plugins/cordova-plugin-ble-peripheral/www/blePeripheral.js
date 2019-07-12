@@ -58,8 +58,6 @@ var onBluetoothStateChangeCallback;
 function registerWriteRequestCallback() {
 
     var didReceiveWriteRequest = function (json) {
-        console.log('didReceiveWriteRequest');
-        console.log(json);
         convertToNativeJS(json);
 
         if (onWriteRequestCallback && typeof onWriteRequestCallback === 'function') {
@@ -67,15 +65,13 @@ function registerWriteRequestCallback() {
         }
     };
 
-    var failure = function () {
+    var failure = function (e) {
         // this should never happen
-        console.log("Failed to add setCharacteristicValueChangedListener");
+        console.log("Failed to add setCharacteristicValueChangedListener", e);
     };
 
     cordova.exec(didReceiveWriteRequest, failure, 'BLEPeripheral', 'setCharacteristicValueChangedListener', []);
 }
-
-registerWriteRequestCallback();
 
 function registerBluetoothStateChangeCallback() {
 
@@ -94,8 +90,6 @@ function registerBluetoothStateChangeCallback() {
 
     cordova.exec(bluetoothStateChanged, failure, 'BLEPeripheral', 'setBluetoothStateChangedListener', []);
 }
-
-registerBluetoothStateChangeCallback();
 
 /* 
 Characteristic premissions are not consistent across platforms. This will need to be reconciled.
@@ -234,6 +228,13 @@ module.exports = {
 
     onBluetoothStateChange: function (callback) {
         onBluetoothStateChangeCallback = callback;
+    },
+
+    init: function (didReceiveWriteRequest, onBluetoothStateChange) {
+        registerBluetoothStateChangeCallback();
+        registerWriteRequestCallback();
+        this.onWriteRequest(didReceiveWriteRequest);
+        this.onBluetoothStateChange(onBluetoothStateChange);
     }
 };
 

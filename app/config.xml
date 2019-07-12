@@ -25,6 +25,8 @@
             <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
             <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
             <uses-permission android:name="android.permission.BLUETOOTH" />
+            <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+            <uses-permission android:name="android.permission.VIBRATE" />
         </config-file>
     </platform>
     <platform name="ios">
@@ -49,4 +51,6 @@
     <plugin name="cordova.plugins.diagnostic" spec="^5.0.0">
         <variable name="ANDROID_SUPPORT_VERSION" value="27.+" />
     </plugin>
+    <engine name="browser" spec="^5.0.4" />
+    <engine name="android" spec="^7.0.0" />
 </widget>

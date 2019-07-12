@@ -33,14 +33,6 @@
       "BLUETOOTH_USAGE_DESCRIPTION": "Used to communicate with your friends to play in multiplayer."
     }
   },
-  "cordova-plugin-compat": {
-    "source": {
-      "type": "registry",
-      "id": "cordova-plugin-compat@^1.2.0"
-    },
-    "is_top_level": false,
-    "variables": {}
-  },
   "cordova-plugin-ble-peripheral": {
     "source": {
       "type": "registry",
@@ -92,5 +84,13 @@
     "variables": {
       "ANDROID_SUPPORT_VERSION": "27.+"
     }
+  },
+  "cordova-plugin-compat": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-compat@^1.2.0"
+    },
+    "is_top_level": false,
+    "variables": {}
   }
 }

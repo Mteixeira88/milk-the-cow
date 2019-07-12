@@ -10,23 +10,31 @@
           "/manifest": [
             {
               "xml": "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\" />",
-              "count": 1,
-              "id": "config.xml"
+              "count": 39
             },
             {
               "xml": "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\" />",
-              "count": 1,
-              "id": "config.xml"
+              "count": 38
             },
             {
               "xml": "<uses-permission android:name=\"android.permission.ACCESS_LOCATION_EXTRA_COMMANDS\" />",
-              "count": 1,
-              "id": "config.xml"
+              "count": 38
             },
             {
               "xml": "<uses-permission android:name=\"android.permission.BLUETOOTH\" />",
-              "count": 1,
-              "id": "config.xml"
+              "count": 40
+            },
+            {
+              "xml": "<uses-permission android:name=\"android.permission.BLUETOOTH_ADMIN\" />",
+              "count": 40
+            },
+            {
+              "xml": "<uses-permission android:name=\"android.permission.VIBRATE\" />",
+              "count": 39
+            },
+            {
+              "xml": "<uses-permission android:maxSdkVersion=\"18\" android:name=\"android.permission.BLUETOOTH\" />",
+              "count": 1
             }
           ],
           "/*": [

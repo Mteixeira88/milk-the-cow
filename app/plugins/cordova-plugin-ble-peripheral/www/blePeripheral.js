@@ -57,8 +57,6 @@ var onBluetoothStateChangeCallback;
 function registerWriteRequestCallback() {
 
     var didReceiveWriteRequest = function (json) {
-        console.log('didReceiveWriteRequest');
-        console.log(json);
         convertToNativeJS(json);
 
         if (onWriteRequestCallback && typeof onWriteRequestCallback === 'function') {
@@ -66,20 +64,18 @@ function registerWriteRequestCallback() {
         }
     };
 
-    var failure = function () {
+    var failure = function (e) {
         // this should never happen
-        console.log("Failed to add setCharacteristicValueChangedListener");
+        console.warn("Failed to add setCharacteristicValueChangedListener", e);
     };
 
     cordova.exec(didReceiveWriteRequest, failure, 'BLEPeripheral', 'setCharacteristicValueChangedListener', []);
 }
 
-registerWriteRequestCallback();
-
 function registerBluetoothStateChangeCallback() {
 
     var bluetoothStateChanged = function (state) {
-        console.log('bluetoothStateChanged', state);
+        console.warn('bluetoothStateChanged', state);
 
         if (onBluetoothStateChangeCallback && typeof onBluetoothStateChangeCallback === 'function') {
             onBluetoothStateChangeCallback(state);
@@ -88,13 +84,11 @@ function registerBluetoothStateChangeCallback() {
 
     var failure = function () {
         // this should never happen
-        console.log("Failed to add bluetoothStateChangedListener");
+        console.warn("Failed to add bluetoothStateChangedListener");
     };
 
     cordova.exec(bluetoothStateChanged, failure, 'BLEPeripheral', 'setBluetoothStateChangedListener', []);
 }
-
-registerBluetoothStateChangeCallback();
 
 /* 
 Characteristic premissions are not consistent across platforms. This will need to be reconciled.
@@ -213,7 +207,7 @@ module.exports = {
     // setDescriptorValueChangedListener: function(success) {
     //     var failure = function() {
     //         // this should never happen
-    //         console.log("Failed to add setDescriptorValueChangedListener");
+    //         console.warn("Failed to add setDescriptorValueChangedListener");
     //     };
     //
     //     cordova.exec(success, failure, 'BLEPeripheral', 'setDescriptorValueChangedListener', []);
@@ -233,5 +227,12 @@ module.exports = {
 
     onBluetoothStateChange: function (callback) {
         onBluetoothStateChangeCallback = callback;
+    },
+
+    init: function (didReceiveWriteRequest, onBluetoothStateChange) {
+        registerBluetoothStateChangeCallback();
+        registerWriteRequestCallback();
+        this.onWriteRequest(didReceiveWriteRequest);
+        this.onBluetoothStateChange(onBluetoothStateChange);
     }
 };

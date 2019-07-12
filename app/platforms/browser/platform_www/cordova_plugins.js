@@ -74,7 +74,6 @@ module.exports = [
 module.exports.metadata = 
 // TOP OF METADATA
 {
-    "cordova-plugin-compat": "1.2.0",
     "cordova-plugin-ble-central": "1.2.2",
     "cordova-plugin-ble-peripheral": "1.0.0",
     "cordova-plugin-bluetooth-peripheral-usage-description": "1.0.0",

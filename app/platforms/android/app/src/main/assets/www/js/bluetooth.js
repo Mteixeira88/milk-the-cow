@@ -91,7 +91,7 @@ Bluetooth = function () {
 
     function makeBluetoothRequest(offNotify) {
         return new Promise((resolve, reject) => {
-            ble.isEnabled(
+            window.ble.isEnabled(
                 function () {
                     // bluetooth is enabled
                     connState = true;
@@ -99,7 +99,7 @@ Bluetooth = function () {
                 }, function () {
                     // Bluetooth not yet enabled so we try to enable it
                     console.log('Bluetooth not yet enabled so we try to enable it');
-                    ble.enable(
+                    window.ble.enable(
                         function () {
                             // bluetooth now enabled
                             connState = true;
@@ -112,7 +112,7 @@ Bluetooth = function () {
                     );
                 });
             if (offNotify) {
-                ble.startStateNotifications(
+                window.ble.startStateNotifications(
                     function (state) {
                         if (state.toLowerCase() === 'off' && connState === true) {
                             connState = false;
@@ -146,15 +146,14 @@ Bluetooth = function () {
      * CLIENT SIDE
      */
     function scan(onEnd) {
-        ble.stopScan();
+        window.ble.stopScan();
         foundedDevices = [];
-        ble.scan([SERVICE_UUID], 10, onDiscoverDevice, onError);
+        window.ble.scan([SERVICE_UUID], 10, onDiscoverDevice, onError);
         clearTimeout(scanTimout);
         scanTimout = setTimeout(() => {
             if (onEnd) onEnd();
         }, 10000);
     }
-
 
     function onDiscoverDevice(device) {
         if (!device.name) {
@@ -163,6 +162,7 @@ Bluetooth = function () {
         if (foundedDevices.some(dev => dev.name === device.name)) {
             return;
         }
+
         foundedDevices.push(device);
         const event = new CustomEvent(EVENTS.NEW_DEVICE, {'detail': device});
         document.dispatchEvent(event);
@@ -172,14 +172,14 @@ Bluetooth = function () {
     function bleConnectionRequest(dev_id) {
         clearTimeout(scanTimout);
         // Check if was previous connected device
-        ble.isConnected(connectedDevice, function () {
+        window.ble.isConnected(connectedDevice, function () {
             disconnect(connectedDevice);
         });
         // Check if you try to connect to same device
-        ble.isConnected(dev_id, function () {
+        window.ble.isConnected(dev_id, function () {
             disconnect(dev_id);
         });
-        ble.connect(dev_id, bleConnectionSuccess, bleConnectionFailure);
+        window.ble.connect(dev_id, bleConnectionSuccess, bleConnectionFailure);
     }
 
     function bleConnectionSuccess(device) {
@@ -193,7 +193,7 @@ Bluetooth = function () {
         connectionFailureTries++;
         if (connectionFailureTries < 3) {
             setTimeout(() => {
-                ble.isConnected(connectedDevice, function () {
+                window.ble.isConnected(connectedDevice, function () {
                     connectionFailureTries = 0;
                 }, function () {
                     setTimeout(() => bleConnectionRequest(device), 300);
@@ -213,10 +213,9 @@ Bluetooth = function () {
         if (!connectedDevice && deviceId) {
             connectedDevice = deviceId;
         }
-        await ble.isConnected(
+        await window.ble.isConnected(
             connectedDevice,
-            function (resp) {
-                console.log(resp);
+            function () {
                 let _data;
                 if (typeof data === 'object' && data !== null) {
                     _data = JSON.stringify(data);
@@ -246,7 +245,7 @@ Bluetooth = function () {
     }
 
     function sendBytes(data) {
-        return ble.write(
+        return window.ble.write(
             connectedDevice,
             SERVICE_UUID,
             CHARACTERISTIC_SERVER_UUID,
@@ -269,7 +268,7 @@ Bluetooth = function () {
 
     function disconnect(device_id) {
         connectedDevice = undefined;
-        ble.disconnect(device_id);
+        window.ble.disconnect(device_id);
     }
 
     this.init = init;
@@ -283,18 +282,19 @@ Bluetooth = function () {
      */
 
     function startServer() {
-        stopServer();
         return new Promise((resolve, reject) => {
-            blePeripheral.onWriteRequest(didReceiveWriteRequest);
-            blePeripheral.onBluetoothStateChange(onBluetoothStateChange);
-            createServiceJSON().then(() => resolve()).catch(e => reject(e));
+            stopServer();
+            window.blePeripheral.init(didReceiveWriteRequest, onBluetoothStateChange);
+            createServiceJSON().then(() => {
+                resolve();
+            }).catch((e) => reject(e));
         });
     }
 
     function createServiceJSON() {
         return new Promise((resolve, reject) => {
-            const property = blePeripheral.properties;
-            const permission = blePeripheral.permissions;
+            const property = window.blePeripheral.properties;
+            const permission = window.blePeripheral.permissions;
 
             const jsonService = {
                 uuid: SERVICE_UUID,
@@ -314,10 +314,10 @@ Bluetooth = function () {
             };
 
             return Promise.all([
-                blePeripheral.createServiceFromJSON(jsonService),
-                blePeripheral.startAdvertising(SERVICE_UUID, CHARACTERISTIC_SERVER_UUID),
+                window.blePeripheral.createServiceFromJSON(jsonService),
+                window.blePeripheral.startAdvertising(SERVICE_UUID, CHARACTERISTIC_SERVER_UUID),
             ]).then(
-                function (ok) {
+                function () {
                     resolve();
                 },
                 function (e) {
@@ -356,12 +356,12 @@ Bluetooth = function () {
         }, 3000);
     }
 
-    function onBluetoothStateChange(state) {
-        console.log('Bluetooth State is', state);
+    function onBluetoothStateChange(new_state) {
+        console.info('Bluetooth State is', new_state);
     }
 
     function stopServer(success, err) {
-        blePeripheral.stopAdvertising(success, err);
+        window.blePeripheral.stopAdvertising(success, err);
     }
 
     this.startServer = startServer;
