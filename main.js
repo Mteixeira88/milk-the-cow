@@ -129,13 +129,32 @@ function showOnDesktop() {
 	document.body.removeChild(backgroundTop);
 	document.body.removeChild(bodyShape);
     var h1 = document.createElement("H1");
+    var h2 = document.createElement("H2");
+    var h4 = document.createElement("H4");
     var gif = document.createElement("IMG");
     gif.style.width = '600px'
-    gif.src = "./assets/desktop.gif"
-    h1.innerText = 'Use a mobile device to play';
+    gif.src = "./assets/cow_init.gif"
+    h1.innerText = 'This game needs a mobile device to play';
+    h1.style.color = "white"
+    h1.style.maxWidth = "340px"
+    h1.style.textAlign = "center"
+    h4.innerText = 'OR';
+    h4.style.color = "white"
+    h4.style.maxWidth = "340px"
+    h4.style.textAlign = "center"
+    h2.innerText = 'Download on PlayStore';
+    h2.style.color = "white"
+    h2.style.maxWidth = "340px"
+    h2.style.textAlign = "center"
     document.body.style.padding = "32px"
-    document.body.appendChild(h1);
+    document.body.style.backgroundColor = "#6dbd88"
+    document.body.style.display = "flex"
+    document.body.style.alignItems = "center"
+    // document.body.style.justifyContent = "center"
     document.body.appendChild(gif);
+    document.body.appendChild(h1);
+    document.body.appendChild(h4);
+    document.body.appendChild(h2);
 }
 
 function init() {
