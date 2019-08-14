@@ -122,12 +122,14 @@ function showOnDesktop() {
 	var highScore = document.querySelector('.highscore');
 	var goal = document.querySelector('.goal');
 	var yourLibrary = document.querySelector('.your-library');
-	var backgroundTop = document.querySelector('.background-top');
+    var backgroundTop = document.querySelector('.background-top');
+    var imagePlayMobile = document.querySelector('.imagePlayStore');
 	document.body.removeChild(highScore);
 	document.body.removeChild(goal);
 	document.body.removeChild(yourLibrary);
 	document.body.removeChild(backgroundTop);
-	document.body.removeChild(bodyShape);
+    document.body.removeChild(bodyShape);
+    document.body.removeChild(imagePlayMobile);
     var h1 = document.createElement("H1");
     var h2 = document.createElement("H2");
     var h4 = document.createElement("H4");
@@ -161,7 +163,7 @@ function showOnDesktop() {
     document.body.appendChild(gif);
     document.body.appendChild(h1);
     document.body.appendChild(h4);
-    document.body.appendChild(h2);
+    // document.body.appendChild(h2);
     document.body.appendChild(imgPlayStore);
 }
 
