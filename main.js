@@ -132,6 +132,13 @@ function showOnDesktop() {
     var h2 = document.createElement("H2");
     var h4 = document.createElement("H4");
     var gif = document.createElement("IMG");
+    var imgPlayStore = document.createElement("IMG");
+    imgPlayStore.style.width = '250px'
+    imgPlayStore.style.cursor = 'pointer'
+    imgPlayStore.src = "https://lh3.googleusercontent.com/ShkH71_PaT4dXnNq7lTKQfnC2RpNYQZI08acnQBsuGZQEGzcWM-pKlqOPyFh1H0DVbD102HSSfJCPADx_TcKYP-N3afW-u4neA2z2Q"
+    imgPlayStore.addEventListener("click", (e) => {
+        window.open('https://play.google.com/store/apps/details?id=today.milkthecow.game', '_blank');
+      });
     gif.style.width = '600px'
     gif.src = "./assets/cow_init.gif"
     h1.innerText = 'This game needs a mobile device to play';
@@ -155,6 +162,7 @@ function showOnDesktop() {
     document.body.appendChild(h1);
     document.body.appendChild(h4);
     document.body.appendChild(h2);
+    document.body.appendChild(imgPlayStore);
 }
 
 function init() {

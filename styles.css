@@ -152,3 +152,18 @@ p {
     width: 32px;
     margin-right: 4px;
 }
+
+.imagePlayStore {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 100px;
+    cursor: pointer;
+}
+
+.imagePlayStore img {
+    width: 180px;
+}
